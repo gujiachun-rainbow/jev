@@ -1,0 +1,150 @@
+{
+  "runs": [
+    {
+      "case": "mixed",
+      "round": 1,
+      "status": "success",
+      "elapsed_ms": 654.4577081222087,
+      "response": {
+        "model": "jev-1.13.0",
+        "answers": {
+          "team": {
+            "type": "choice",
+            "choice": "engineering",
+            "confidence": 1.0,
+            "probabilities": {
+              "billing": 0.0,
+              "engineering": 1.0,
+              "other": 0.0
+            }
+          },
+          "severity": {
+            "type": "score",
+            "score": 2.0,
+            "confidence": 1.0,
+            "legend": {
+              "0": "不影响正常业务",
+              "1": "部分业务受影响但有替代方案",
+              "2": "核心业务全部阻塞"
+            },
+            "probabilities": {
+              "0": 0.0,
+              "1": 0.0,
+              "2": 1.0
+            }
+          },
+          "human": {
+            "type": "noul",
+            "noul": 0.98
+          }
+        },
+        "usage": {
+          "input_tokens": 466,
+          "output_tokens": 68
+        }
+      },
+      "interpretation": "建议加急转技术人工：True"
+    },
+    {
+      "case": "mixed",
+      "round": 2,
+      "status": "success",
+      "elapsed_ms": 286.8985419627279,
+      "response": {
+        "model": "jev-1.13.0",
+        "answers": {
+          "team": {
+            "type": "choice",
+            "choice": "engineering",
+            "confidence": 1.0,
+            "probabilities": {
+              "other": 0.0,
+              "engineering": 1.0,
+              "billing": 0.0
+            }
+          },
+          "severity": {
+            "type": "score",
+            "score": 2.0,
+            "confidence": 1.0,
+            "legend": {
+              "0": "不影响正常业务",
+              "1": "部分业务受影响但有替代方案",
+              "2": "核心业务全部阻塞"
+            },
+            "probabilities": {
+              "0": 0.0,
+              "1": 0.0,
+              "2": 1.0
+            }
+          },
+          "human": {
+            "type": "noul",
+            "noul": 0.99
+          }
+        },
+        "usage": {
+          "input_tokens": 466,
+          "output_tokens": 68
+        }
+      },
+      "interpretation": "建议加急转技术人工：True"
+    },
+    {
+      "case": "mixed",
+      "round": 3,
+      "status": "success",
+      "elapsed_ms": 289.7660410962999,
+      "response": {
+        "model": "jev-1.13.0",
+        "answers": {
+          "team": {
+            "type": "choice",
+            "choice": "engineering",
+            "confidence": 1.0,
+            "probabilities": {
+              "other": 0.0,
+              "engineering": 1.0,
+              "billing": 0.0
+            }
+          },
+          "severity": {
+            "type": "score",
+            "score": 2.0,
+            "confidence": 1.0,
+            "legend": {
+              "0": "不影响正常业务",
+              "1": "部分业务受影响但有替代方案",
+              "2": "核心业务全部阻塞"
+            },
+            "probabilities": {
+              "0": 0.0,
+              "1": 0.0,
+              "2": 1.0
+            }
+          },
+          "human": {
+            "type": "noul",
+            "noul": 0.99
+          }
+        },
+        "usage": {
+          "input_tokens": 466,
+          "output_tokens": 68
+        }
+      },
+      "interpretation": "建议加急转技术人工：True"
+    }
+  ],
+  "statistics": {
+    "mixed": {
+      "success_count": 3,
+      "min_ms": 286.8985419627279,
+      "mean_ms": 410.37409706041217,
+      "p50_ms": 289.7660410962999,
+      "p95_ms": 654.4577081222087,
+      "max_ms": 654.4577081222087,
+      "failure_count": 0
+    }
+  }
+}

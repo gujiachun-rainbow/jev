@@ -216,3 +216,10 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# Project-local files
+.venv/
+*.pyc
+.env.*
+!.env.example
+.DS_Store

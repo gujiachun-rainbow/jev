@@ -1,0 +1,305 @@
+{
+  "runs": [
+    {
+      "case": "choice",
+      "round": 1,
+      "status": "success",
+      "elapsed_ms": 656.3928751274943,
+      "response": {
+        "model": "jev-1.13.0",
+        "answers": {
+          "topic": {
+            "type": "choice",
+            "choice": "wrong_item",
+            "confidence": 1.0,
+            "probabilities": {
+              "payment": 0.0,
+              "other": 0.0,
+              "delivery": 0.0,
+              "wrong_item": 1.0
+            }
+          },
+          "resolution": {
+            "type": "choice",
+            "choice": "exchange",
+            "confidence": 1.0,
+            "probabilities": {
+              "exchange": 1.0,
+              "information": 0.0,
+              "refund": 0.0,
+              "unclear": 0.0
+            }
+          }
+        },
+        "usage": {
+          "input_tokens": 493,
+          "output_tokens": 90
+        }
+      },
+      "interpretation": "建议分类：wrong_item"
+    },
+    {
+      "case": "score",
+      "round": 1,
+      "status": "success",
+      "elapsed_ms": 783.791417023167,
+      "response": {
+        "model": "jev-1.13.0",
+        "answers": {
+          "severity": {
+            "type": "score",
+            "score": 1.08,
+            "confidence": 0.88,
+            "legend": {
+              "0": "只有视觉或文案问题，功能可正常使用",
+              "1": "部分功能不可用，但有可行的替代操作",
+              "2": "核心操作完全受阻，没有可用替代操作"
+            },
+            "probabilities": {
+              "0": 0.0,
+              "1": 0.92,
+              "2": 0.08
+            }
+          },
+          "report_quality": {
+            "type": "score",
+            "score": 1.93,
+            "confidence": 0.89,
+            "legend": {
+              "0": "只有笼统描述，没有操作步骤和环境信息",
+              "1": "描述环境或操作步骤，但缺少定位证据",
+              "2": "有明确环境、复现步骤和日志或截图证据"
+            },
+            "probabilities": {
+              "0": 0.0,
+              "1": 0.07,
+              "2": 0.93
+            }
+          }
+        },
+        "usage": {
+          "input_tokens": 504,
+          "output_tokens": 31
+        }
+      },
+      "interpretation": "严重程度=1.08；由等级概率加权计算=1.08"
+    },
+    {
+      "case": "noul",
+      "round": 1,
+      "status": "success",
+      "elapsed_ms": 269.910000031814,
+      "response": {
+        "model": "jev-1.13.0",
+        "answers": {
+          "human": {
+            "type": "noul",
+            "noul": 0.99
+          },
+          "refund": {
+            "type": "noul",
+            "noul": 0.99
+          },
+          "repeat": {
+            "type": "noul",
+            "noul": 0.98
+          }
+        },
+        "usage": {
+          "input_tokens": 407,
+          "output_tokens": 52
+        }
+      },
+      "interpretation": "建议人工接待=True；标记重复咨询=True；登记退款诉求=True"
+    },
+    {
+      "case": "advanced",
+      "round": 1,
+      "status": "success",
+      "elapsed_ms": 273.7026249524206,
+      "response": {
+        "model": "jev-1.13.0",
+        "answers": {
+          "topic": {
+            "type": "choice",
+            "choice": "status",
+            "confidence": 1.0,
+            "probabilities": {
+              "status": 1.0,
+              "other": 0.0,
+              "policy": 0.0
+            }
+          },
+          "impact": {
+            "type": "score",
+            "score": 0.0,
+            "confidence": 1.0,
+            "legend": {
+              "0": {
+                "definition": "询问进度，没有表达实际损失",
+                "examples": [
+                  "请查进度"
+                ]
+              },
+              "1": {
+                "definition": "资金占用造成不便，但可暂时等待",
+                "examples": [
+                  "影响下次购物"
+                ]
+              },
+              "2": {
+                "definition": "资金占用造成明确的紧急生活困难",
+                "examples": [
+                  "无法支付必需开支"
+                ]
+              }
+            },
+            "probabilities": {
+              "0": 1.0,
+              "1": 0.0,
+              "2": 0.0
+            }
+          },
+          "already_returned": {
+            "type": "noul",
+            "noul": 0.98
+          }
+        },
+        "usage": {
+          "input_tokens": 752,
+          "output_tokens": 71
+        }
+      },
+      "interpretation": "咨询主题=status；已收到退货的概率=0.98"
+    },
+    {
+      "case": "matching",
+      "round": 1,
+      "status": "success",
+      "elapsed_ms": 238.07158321142197,
+      "response": {
+        "model": "jev-1.13.0",
+        "answers": {
+          "record_A": {
+            "type": "noul",
+            "noul": 0.94
+          },
+          "record_B": {
+            "type": "noul",
+            "noul": 0.04
+          },
+          "record_C": {
+            "type": "noul",
+            "noul": 0.01
+          }
+        },
+        "usage": {
+          "input_tokens": 532,
+          "output_tokens": 55
+        }
+      },
+      "interpretation": "待人工确认的候选匹配：['record_A']"
+    },
+    {
+      "case": "mixed",
+      "round": 1,
+      "status": "success",
+      "elapsed_ms": 294.8663330171257,
+      "response": {
+        "model": "jev-1.13.0",
+        "answers": {
+          "team": {
+            "type": "choice",
+            "choice": "engineering",
+            "confidence": 1.0,
+            "probabilities": {
+              "engineering": 1.0,
+              "billing": 0.0,
+              "other": 0.0
+            }
+          },
+          "severity": {
+            "type": "score",
+            "score": 2.0,
+            "confidence": 1.0,
+            "legend": {
+              "0": "不影响正常业务",
+              "1": "部分业务受影响但有替代方案",
+              "2": "核心业务全部阻塞"
+            },
+            "probabilities": {
+              "0": 0.0,
+              "1": 0.0,
+              "2": 1.0
+            }
+          },
+          "human": {
+            "type": "noul",
+            "noul": 0.99
+          }
+        },
+        "usage": {
+          "input_tokens": 466,
+          "output_tokens": 68
+        }
+      },
+      "interpretation": "建议加急转技术人工：True"
+    }
+  ],
+  "statistics": {
+    "choice": {
+      "success_count": 1,
+      "min_ms": 656.3928751274943,
+      "mean_ms": 656.3928751274943,
+      "p50_ms": 656.3928751274943,
+      "p95_ms": 656.3928751274943,
+      "max_ms": 656.3928751274943,
+      "failure_count": 0
+    },
+    "score": {
+      "success_count": 1,
+      "min_ms": 783.791417023167,
+      "mean_ms": 783.791417023167,
+      "p50_ms": 783.791417023167,
+      "p95_ms": 783.791417023167,
+      "max_ms": 783.791417023167,
+      "failure_count": 0
+    },
+    "noul": {
+      "success_count": 1,
+      "min_ms": 269.910000031814,
+      "mean_ms": 269.910000031814,
+      "p50_ms": 269.910000031814,
+      "p95_ms": 269.910000031814,
+      "max_ms": 269.910000031814,
+      "failure_count": 0
+    },
+    "advanced": {
+      "success_count": 1,
+      "min_ms": 273.7026249524206,
+      "mean_ms": 273.7026249524206,
+      "p50_ms": 273.7026249524206,
+      "p95_ms": 273.7026249524206,
+      "max_ms": 273.7026249524206,
+      "failure_count": 0
+    },
+    "matching": {
+      "success_count": 1,
+      "min_ms": 238.07158321142197,
+      "mean_ms": 238.07158321142197,
+      "p50_ms": 238.07158321142197,
+      "p95_ms": 238.07158321142197,
+      "max_ms": 238.07158321142197,
+      "failure_count": 0
+    },
+    "mixed": {
+      "success_count": 1,
+      "min_ms": 294.8663330171257,
+      "mean_ms": 294.8663330171257,
+      "p50_ms": 294.8663330171257,
+      "p95_ms": 294.8663330171257,
+      "max_ms": 294.8663330171257,
+      "failure_count": 0
+    }
+  }
+}
