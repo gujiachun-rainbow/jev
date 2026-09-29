@@ -32,3 +32,6 @@
 }
 
 .distribution-row .field-key{font-family:var(--mono);min-width:0;overflow-wrap:anywhere}
+.criterion.criterion-choice{grid-template-columns:minmax(0,2fr) minmax(0,3fr)}
+.criterion-choice .criterion-key{font-family:var(--mono);background:#edf4ee;color:var(--green)}
+@media(max-width:600px){.criterion.criterion-choice{grid-template-columns:minmax(0,1fr);gap:5px;margin-top:14px}}

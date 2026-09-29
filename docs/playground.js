@@ -9,7 +9,7 @@ const demos = {
     {name:'活动报名 · 材料齐备', question:'这份摄影展报名是否具备初审所需的全部材料？', context:'报名人：陈晨；联系邮箱：chen@example.com；已上传 3 张摄影作品。作品说明栏为空，留言说下周补交。', criteria:[['true','已提供姓名、联系邮箱、至少 3 张作品，以及作品说明，四项缺一不可。'],['false','缺少任意一项必需材料；承诺后补不算已提供。']]},
     {name:'场馆预约 · 时间冲突', question:'新的排练预约是否与现有预约冲突？', context:'同一舞蹈教室周六已有预约：09:00—10:30、14:00—16:00。新申请的时段是周六 10:30—12:00，场馆允许上一场结束后立即开始下一场。', criteria:[['true','新预约与同一场地的已有预约存在实际重叠时段。'],['false','没有实际重叠；仅开始时间等于上一场结束时间不算冲突。']]}
   ]},
-  choice: {label:'选择', description:'适合从多个无序选项中选择一类。Jev 返回选中类别及各选项的概率。', hint:'每个选项定义一种不同的类别', note:'Choice 用于分类，选项之间没有高低顺序。图中展示类别概率；最大类别概率不等于 confidence，也不是正确率保证。', examples:[
+  choice: {label:'选择', description:'适合从多个无序选项中选择一类。Jev 返回选中类别及各选项的概率。', hint:'名称和描述均可编辑，都会影响判断，请保持含义一致', note:'Choice 用于分类，选项之间没有高低顺序。图中展示类别概率；最大类别概率不等于 confidence，也不是正确率保证。', examples:[
     {name:'电商售后 · 问题分类', question:'这次售后主要是什么问题？', context:'我买的是黑色耳机，收到的却是白色，请换成黑色，暂时不用退款。', criteria:[['wrong_item','商品型号、颜色或规格与订单不符'],['delivery','物流延误或未收到包裹'],['payment','扣款或账单问题'],['other','其他问题']]},
     {name:'客服分流 · 团队路由', question:'应该由哪个团队处理根本问题？', context:'支付接口一直报错，客户都无法付款，请尽快帮我处理。', criteria:[['technical','系统、接口或软件功能故障'],['billing','扣款、退款或账单争议'],['sales','购买咨询或产品方案'],['other','不属于上述类别']]},
     {name:'旅游规划 · 兴趣分类', question:'这位游客本次旅行最主要的兴趣是什么？', context:'不太想逛商场，也不打算爬山。这次想多看看老建筑和博物馆，最好能预约一场当地历史讲解。吃饭方便就行。', criteria:[['culture','主要关注历史、博物馆、建筑或当地文化'],['nature','主要关注山林、海岛或户外自然风景'],['food','主要关注当地美食和餐饮体验'],['shopping','主要关注购物'],['other','未体现上述兴趣或无法确定主要兴趣']]},
@@ -66,7 +66,12 @@ function loadExample() {
   stopRun();
   const demo = current();
   $('instructions').value = demo.question; $('context').value = demo.context;
-  $('criteria').innerHTML = demo.criteria.map(([key, description], index) => `<div class="criterion"><label for="criterion-${index}" class="criterion-tag ${key === 'false' ? 'false' : ''}">${escapeHTML(mode === 'noul' ? key.toUpperCase() : key)}</label><input id="criterion-${index}" value="${escapeHTML(description)}" aria-label="${escapeHTML(key)} 判定标准"></div>`).join('');
+  $('criteria').innerHTML = demo.criteria.map(([key, description], index) => {
+    const nameField = mode === 'choice'
+      ? `<input id="criterion-key-${index}" class="criterion-key" value="${escapeHTML(key)}" aria-label="第 ${index + 1} 项类别名称" placeholder="类别名称" spellcheck="false">`
+      : `<label for="criterion-${index}" class="criterion-tag ${key === 'false' ? 'false' : ''}">${escapeHTML(mode === 'noul' ? key.toUpperCase() : key)}</label>`;
+    return `<div class="criterion ${mode === 'choice' ? 'criterion-choice' : ''}">${nameField}<input id="criterion-${index}" class="criterion-description" value="${escapeHTML(description)}" aria-label="第 ${index + 1} 项判定标准" placeholder="类别描述"></div>`;
+  }).join('');
   $('edit-note').hidden = true;
   updateContext(); clearResult(); setView('visual');
 }
@@ -97,7 +102,10 @@ function renderResult(data) {
   $('reading-note').textContent = demos[data.mode].note;
   let html = `<div class="card-label"><span>EVALUATION</span><span class="badge">${data.mode.toUpperCase()}</span></div>`;
   if (data.mode === 'noul') {
-    html += `<div class="metric"><strong>${answer.noul >= .8 ? 'TRUE' : 'FALSE'}</strong><span>${pct(answer.noul)}</span></div><div class="bar-track"><div class="bar-fill" style="--value:${pct(answer.noul)}"></div></div><div class="bar-caption"><span>true 概率</span><span>false 概率 ${pct(1-answer.noul)}</span></div>`;
+    const isTrue = answer.noul >= .8;
+    const resultProbability = isTrue ? answer.noul : 1 - answer.noul;
+    const distribution = {criteria:[['true'], ['false']], probabilities:[answer.noul, 1 - answer.noul]};
+    html += `<div class="metric"><strong>${isTrue ? 'TRUE' : 'FALSE'}</strong><span>${pct(resultProbability)}</span></div><div class="distribution-title">true / false 概率分布</div>${bars(distribution)}`;
   } else if (data.mode === 'choice') {
     html += `<div class="metric"><strong class="choice-value">${escapeHTML(answer.choice)}</strong><span>${pct(answer.probabilities[answer.choice])}</span></div><div class="distribution-title">类别概率分布</div>${bars(demo)}`;
   } else {
@@ -126,10 +134,19 @@ $('editor').addEventListener('input', () => {
 $('run').addEventListener('click', async () => {
   const fields = [$('context'), $('instructions'), ...$('criteria').querySelectorAll('input')];
   const empty = fields.find(field => !field.value.trim());
-  if (empty) { $('edit-note').hidden = false; $('edit-note').textContent = '请先填写待分析内容、问题和判定标准。'; empty.focus(); return; }
+  if (empty) { $('edit-note').hidden = false; $('edit-note').textContent = empty.classList.contains('criterion-key') ? '请填写类别名称，名称不能只包含空格。' : '请先填写待分析内容、问题和判定标准。'; empty.focus(); return; }
+  const keys = [...$('criteria').querySelectorAll('.criterion-key')];
+  const seen = new Set();
+  for (const input of keys) {
+    const key = input.value.trim();
+    if (seen.has(key)) {
+      $('edit-note').hidden = false; $('edit-note').textContent = `类别名称“${key}”重复，请为每个类别填写不同的名称。`; input.focus(); return;
+    }
+    seen.add(key);
+  }
   stopRun(); clearResult('正在调用 Jev…');
   const controller = new AbortController(); activeRequest = controller;
-  const criteria = [...$('criteria').querySelectorAll('input')].map((input, index) => [current().criteria[index][0], input.value]);
+  const criteria = [...$('criteria').querySelectorAll('.criterion-description')].map((input, index) => [mode === 'choice' ? keys[index].value.trim() : current().criteria[index][0], input.value]);
   const payload = {mode, state:$('context').value, instructions:$('instructions').value,
     criteria:mode === 'score' ? criteria.map(([, value]) => value) : Object.fromEntries(criteria)};
   $('edit-note').hidden = true;
