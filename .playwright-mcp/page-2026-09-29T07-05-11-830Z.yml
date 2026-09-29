@@ -1,0 +1,899 @@
+- generic [active] [ref=f1e1]:
+  - link "跳到正文" [ref=f1e2] [cursor=pointer]:
+    - /url: "#content"
+  - complementary "课程导航" [ref=f1e3]:
+    - generic [ref=f1e4]:
+      - text: jev
+      - generic [ref=f1e5]: DEVELOPER FIELD GUIDE / 01
+    - generic [ref=f1e6]: 章节目录
+    - navigation [ref=f1e7]:
+      - link "序章 为什么有 Jev" [ref=f1e8] [cursor=pointer]:
+        - /url: "#intro"
+        - generic [ref=f1e9]: 序章
+        - text: 为什么有 Jev
+      - link "第一章 Jev 的定位与独立调用" [ref=f1e10] [cursor=pointer]:
+        - /url: "#chapter1"
+        - generic [ref=f1e11]: 第一章
+        - text: Jev 的定位与独立调用
+      - link "第二章 三种判断原语" [ref=f1e12] [cursor=pointer]:
+        - /url: "#chapter2"
+        - generic [ref=f1e13]: 第二章
+        - text: 三种判断原语
+      - link "第三章 设计判断问题" [ref=f1e14] [cursor=pointer]:
+        - /url: "#chapter3"
+        - generic [ref=f1e15]: 第三章
+        - text: 设计判断问题
+      - link "第四章 客服分流" [ref=f1e16] [cursor=pointer]:
+        - /url: "#chapter4"
+        - generic [ref=f1e17]: 第四章
+        - text: 客服分流
+      - link "第五章 商品推荐" [ref=f1e18] [cursor=pointer]:
+        - /url: "#chapter5"
+        - generic [ref=f1e19]: 第五章
+        - text: 商品推荐
+      - link "第六章 多轮信息检查" [ref=f1e20] [cursor=pointer]:
+        - /url: "#chapter6"
+        - generic [ref=f1e21]: 第六章
+        - text: 多轮信息检查
+      - link "第七章 验证与阈值实验" [ref=f1e22] [cursor=pointer]:
+        - /url: "#chapter7"
+        - generic [ref=f1e23]: 第七章
+        - text: 验证与阈值实验
+      - link "第八章 综合项目：工单助手" [ref=f1e24] [cursor=pointer]:
+        - /url: "#chapter8"
+        - generic [ref=f1e25]: 第八章
+        - text: 综合项目：工单助手
+      - link "附录 速查与参考" [ref=f1e26] [cursor=pointer]:
+        - /url: "#reference"
+        - generic [ref=f1e27]: 附录
+        - text: 速查与参考
+    - generic [ref=f1e28]:
+      - generic [ref=f1e29]: 学习进度 · 0 / 8 章
+      - generic [ref=f1e31]: 勾选第一至八章末尾，记录本机学习进度。
+      - generic [ref=f1e32]:
+        - link "实验手册" [ref=f1e33] [cursor=pointer]:
+          - /url: COURSE_LABS.md
+        - text: ·
+        - link "运行说明" [ref=f1e34] [cursor=pointer]:
+          - /url: ../README.md
+  - generic [ref=f1e35]:
+    - banner [ref=f1e36]:
+      - button "目录" [ref=f1e37] [cursor=pointer]
+      - generic [ref=f1e38]: JEV / 开发者实战课程 / 学员讲义
+      - button "打印 / 存为 PDF" [ref=f1e39] [cursor=pointer]
+    - main [ref=f1e40]:
+      - generic [ref=f1e41]:
+        - generic [ref=f1e42]: JEV / 开发者实战课程
+        - heading [level=1] [ref=f1e43]:
+          - text: Jev 实战：
+          - emphasis [ref=f1e44]: 从语义判断到业务决策
+        - paragraph [ref=f1e45]: 学会用 Jev 做分类、评分与条件判断，再用代码完成分流、排序和信息检查。
+      - generic [ref=f1e46]:
+        - generic [ref=f1e47]: 课程背景
+        - heading "序章 为什么有 Jev" [level=2] [ref=f1e49]
+        - generic [ref=f1e50]: 理解语义判断的常见做法、接入难点，以及 Jev 带来的变化。
+        - paragraph [ref=f1e51]: 假设你正在开发客服系统或商品推荐功能。用户用日常语言表达需求，程序却需要一个明确的判断结果，才能决定下一步做什么。下面用两个具体场景说明。
+        - paragraph [ref=f1e52]:
+          - strong [ref=f1e53]: 场景一：客服消息应该交给谁？
+          - text: 一家电商平台由物流客服处理配送查询，售后客服处理退款申请。客户说“订单还没收到，帮我查查到哪了”，需要物流客服帮忙查询；如果说“订单还没收到，我不想等了，想申请退款”，则需要售后客服处理。两句话都有“订单还没收到”，但客户想办的事不同。客服系统需要理解客户是在查进度还是申请退款，才能把消息交给合适的人。
+        - paragraph [ref=f1e54]:
+          - strong [ref=f1e55]: 场景二：两台预算内的电脑，哪台更适合？
+          - text: 用户说“预算 6000 元，经常出差，主要写文档、开视频会议，希望轻便，不玩游戏”。商店里有一台 4999 元、重 1.2 kg 的办公本，以及一台 5999 元、重 2.5 kg 的游戏本。两台都在预算内，也都能满足基本办公需求，但用户经常需要带着电脑出差，较轻的办公本更符合他的需求。推荐系统需要结合用户的用途和偏好，判断哪台更适合他。
+        - paragraph [ref=f1e56]:
+          - text: 这两个场景有一个共同点：
+          - strong [ref=f1e57]: 需要理解用户话里的意思，才能做出业务判断
+          - text: 。前者要判断客户想办理哪类业务，后者要判断商品与用户需求有多匹配。这正是 Jev 所关注的语义判断需求。
+        - heading "一、没有 Jev 时，这类问题怎么解决？" [level=3] [ref=f1e58]
+        - paragraph [ref=f1e59]: 语义判断早已有多种实现方式。选择哪一种，取决于任务范围、数据和维护成本。
+        - generic [ref=f1e60]:
+          - generic [ref=f1e61]:
+            - text: 01 / 规则与关键词
+            - heading "把判断写成条件" [level=4] [ref=f1e62]
+            - paragraph [ref=f1e63]: 例如看到“物流”就分到物流队列。规则明确、容易追踪，但“怎么还没送到”和“已经收到了，不用查物流”需要理解不同含义；只靠关键词时，往往要不断补充例外。
+          - generic [ref=f1e64]:
+            - text: 02 / 专用分类模型
+            - heading "为特定任务训练模型" [level=4] [ref=f1e65]
+            - paragraph [ref=f1e66]: 用标注样本训练分类器或评分模型，可以直接输出判断。代价是准备数据、训练与维护；新增类别或改变标准时，还要评估是否需要重新训练。
+          - generic [ref=f1e67]:
+            - text: 03 / 通用大模型
+            - heading "在提示词里定义判断任务" [level=4] [ref=f1e68]
+            - paragraph [ref=f1e69]: 在提示词中说明类别或评分标准，让模型理解用户需求并返回判断。接入灵活，但仍需约定输出格式、验证判断质量，并处理信息不足和误判。
+        - generic [ref=f1e70]:
+          - heading "展开看：通用大模型如何完成判断" [level=4] [ref=f1e71]
+          - generic [ref=f1e72]:
+            - heading "怎么处理？" [level=5] [ref=f1e73]
+            - paragraph [ref=f1e74]: 把用户原话和判断要求一起交给模型。例如告诉它：“查询配送进度属于物流，申请退款属于售后；请判断这条消息的类别，信息不足时返回无法确定。”对于推荐，则提供用户需求和商品资料，要求它按办公、便携等标准给每件商品打分。
+          - generic [ref=f1e75]:
+            - heading "怎么接入程序？" [level=5] [ref=f1e76]
+            - paragraph [ref=f1e77]: 约定输出字段，例如客服返回“类别”，推荐返回“商品编号、匹配分数”。模型按要求生成文本或 JSON，程序读取结果后分流或排序。支持结构化输出的模型还可以约束字段类型和类别范围，便于程序读取。
+          - generic [ref=f1e78]:
+            - heading "局限在哪里？" [level=5] [ref=f1e79]
+            - paragraph [ref=f1e80]: 格式正确不代表判断正确：“查物流，也想问问退款”同时包含两种诉求，需要先规定如何处理；“打 8 分”也需要明确评分尺度，才能与其他商品比较。模型自己写出的“90% 把握”不能直接当成经过校准的正确率。开发者仍需设计判断标准、用真实样本检验效果，并处理误判和信息不足；提示词或模型版本变化后，也需要重新验证。
+        - heading "二、接入难点：拿到答案后，程序凭什么继续？" [level=3] [ref=f1e81]
+        - generic [ref=f1e82]: “这大概是物流问题，建议查询订单。”
+        - paragraph [ref=f1e83]: 人能理解这句话，但程序还需要明确的约定：类别字段是什么？“大概”怎么影响分流？信息不足时，是直接查询还是先追问？即使返回合法 JSON，也只解决了结果格式的一部分问题，不能证明语义判断正确，更不能自动确定业务动作。
+        - paragraph [ref=f1e84]: 分类、评分和条件检查会在不同业务里反复出现。与其每次重新约定一套回答方式，可以把它们设计成统一的判断接口：明确问什么、返回什么，再由代码决定如何使用结果。这就是理解 Jev 出现背景的关键。
+        - heading "三、有了 Jev，变化在哪里？" [level=3] [ref=f1e85]
+        - table [ref=f1e87]:
+          - rowgroup [ref=f1e88]:
+            - row [ref=f1e89]:
+              - columnheader "开发者要解决的问题" [ref=f1e90]
+              - columnheader "Jev 提供的方式" [ref=f1e91]
+              - columnheader "业务代码如何使用" [ref=f1e92]
+          - rowgroup [ref=f1e93]:
+            - row [ref=f1e94]:
+              - cell "这条消息属于哪一类？" [ref=f1e95]
+              - cell "Choice：返回类别、概率分布与置信度" [ref=f1e96]
+              - cell "分到对应队列；低置信度时先澄清" [ref=f1e97]
+            - row [ref=f1e98]:
+              - cell "这个候选有多合适？" [ref=f1e99]
+              - cell "Score：依据有序标准返回分数、概率分布与置信度" [ref=f1e100]
+              - cell "排序、过滤，或决定是否需要复核" [ref=f1e101]
+            - row [ref=f1e102]:
+              - cell "用户是否提供了必要信息？" [ref=f1e103]
+              - cell "Noul：返回条件成立的概率" [ref=f1e104]
+              - cell "按门槛判断是否继续收集信息" [ref=f1e105]
+        - paragraph [ref=f1e106]: 开发者仍然需要定义问题和标准，但返回值的类型与读取方式由接口约定。模型负责给出判断，代码显式处理阈值、兜底和后续动作；调整业务策略时，可以修改代码中的规则。
+        - generic [ref=f1e107]:
+          - generic [ref=f1e108]: 以客服分流为例 / 从输入到动作
+          - generic [ref=f1e109]:
+            - generic [ref=f1e110]:
+              - strong [ref=f1e111]: 提交消息与问题
+              - generic [ref=f1e112]: “订单还没收到”定义物流、售后、无法确定
+            - generic [ref=f1e113]: →
+            - generic [ref=f1e114]:
+              - strong [ref=f1e115]: Jev 返回判断
+              - generic [ref=f1e116]: 类别与概率分布以及分类置信度
+            - generic [ref=f1e117]: →
+            - generic [ref=f1e118]:
+              - strong [ref=f1e119]: 代码选择分支
+              - generic [ref=f1e120]: 达到门槛：进入处理流程不确定：澄清或复核
+          - paragraph [ref=f1e121]: 这是处理流程示意，不是模型实测结果。接收判断的可以是脚本、后台服务、工作流，也可以是 Agent。
+        - heading "四、它解决了什么，又留下哪些工作？" [level=3] [ref=f1e122]
+        - paragraph [ref=f1e123]: Jev 为常见语义判断提供了专门的接口和统一的结果形式，让开发者更容易把判断接入分流、排序和信息检查。它可以独立使用，Agent 只是可选的调用方。
+        - paragraph [ref=f1e124]: 通用大模型同样可以完成这类任务并返回结构化数据。Jev 是否适合你的场景，需要比较实际判断质量、延迟和成本；问题定义、样本验证、阈值选择、权限检查和失败处理仍由应用负责。
+        - paragraph [ref=f1e125]:
+          - text: 模型定位与返回类型依据：
+          - link "Jev 官方介绍" [ref=f1e126] [cursor=pointer]:
+            - /url: https://docs.typesafe.ai/introduction
+          - text: 。以上对比用于说明设计动机，不代表各方案的性能评测。
+        - paragraph [ref=f1e127]:
+          - link "接下来：理解 Jev 的位置，并完成第一次独立调用 →" [ref=f1e128] [cursor=pointer]:
+            - /url: "#chapter1"
+      - generic [ref=f1e129]:
+        - generic [ref=f1e130]:
+          - generic [ref=f1e131]: 定位与入门
+          - generic [ref=f1e132]: main.py
+        - heading "第一章 Jev 的定位与独立调用" [level=2] [ref=f1e133]
+        - generic [ref=f1e134]: Jev 返回结构化语义判断，应用代码负责策略与执行；是否接入 Agent，由业务需要决定。
+        - generic [ref=f1e135]:
+          - generic [ref=f1e136]: 具备 Python 基础即可
+          - generic [ref=f1e137]: 8 个章节
+          - generic [ref=f1e138]: 3 个业务场景 · Agent 可选
+          - generic [ref=f1e139]: Python 实战
+        - heading "1.1 从判断到执行" [level=3] [ref=f1e140]
+        - paragraph [ref=f1e141]: 把 Jev 接入业务系统，需要回答三个问题：哪些语义判断应该独立出来？模型结果怎样变成业务分支？如何验证这些分支符合业务要求？
+        - generic [ref=f1e142]:
+          - generic [ref=f1e143]:
+            - text: 01—03 / 理解原语
+            - heading "先理解，再定义问题" [level=4] [ref=f1e144]
+            - paragraph [ref=f1e145]: 读懂三种原语、输入上下文和标准设计。每次练习先写期望行为，再看模型结果。
+          - generic [ref=f1e146]:
+            - text: 04—08 / 放进系统
+            - heading "跑案例，再验证取舍" [level=4] [ref=f1e147]
+            - paragraph [ref=f1e148]: 先跟踪判断、分支与业务结果，再按需学习 Agent 接入；用反例和边界样本检查系统。
+        - paragraph [ref=f1e149]: 学习路径：第 1～3 章掌握独立调用；第 4～6 章先理解通用业务流程，再选学现有 Agent 实现；第 7～8 章验证并完成一个可独立运行的项目。
+        - group [ref=f1e150]:
+          - generic "配置环境与运行案例" [ref=f1e151] [cursor=pointer]
+        - heading "1.2 从一条工单开始" [level=3] [ref=f1e152]
+        - generic [ref=f1e153]: “支付接口一直报错，客户都无法付款，请尽快帮我处理。”
+        - paragraph [ref=f1e154]: 面对这条消息，客服系统需要做几件不同的事：识别应该由哪个团队处理，评估故障影响，判断是否需要追问，再调用工具或生成回复。把这些事全放进一个提示词，可以得到一句回答，却不容易观察每一步为何发生。
+        - paragraph [ref=f1e155]:
+          - text: Jev 提供一种显式的判断接口：给它需要分析的
+          - code [ref=f1e156]: state
+          - text: ，再提出带类型的
+          - code [ref=f1e157]: questions
+          - text: 。返回的类别、分数或条件概率可以直接交给代码。模型给出判断，应用仍然负责决定如何使用判断。
+        - heading "1.3 四个名字，四种职责" [level=3] [ref=f1e158]
+        - table [ref=f1e160]:
+          - rowgroup [ref=f1e161]:
+            - row [ref=f1e162]:
+              - columnheader "组成" [ref=f1e163]
+              - columnheader "在本项目中的角色" [ref=f1e164]
+              - columnheader "你会在哪里看到它" [ref=f1e165]
+          - rowgroup [ref=f1e166]:
+            - row [ref=f1e167]:
+              - cell "TypeSafe" [ref=f1e168]
+              - cell "提供平台和 API" [ref=f1e169]
+              - cell "API Key、服务地址" [ref=f1e170]
+            - row [ref=f1e171]:
+              - cell "Jev" [ref=f1e172]
+              - cell "完成结构化语义判断的模型" [ref=f1e173]
+              - cell [ref=f1e174]:
+                - code [ref=f1e175]: model="jev-latest"
+            - row [ref=f1e176]:
+              - cell "typesafe-sdk" [ref=f1e177]
+              - cell "Python 客户端，定义问题与读取结果" [ref=f1e178]
+              - cell [ref=f1e179]:
+                - code [ref=f1e180]: Choice / Score / Noul
+            - row [ref=f1e181]:
+              - cell "LangChain + DeepSeek（可选）" [ref=f1e182]
+              - cell "在本项目的 Agent 扩展示例中组织工具调用与回复" [ref=f1e183]
+              - cell [ref=f1e184]:
+                - code [ref=f1e185]: create_agent()
+        - paragraph [ref=f1e186]:
+          - text: Jev 属于面向软件提供结构化判断的 System One 模型。它可以作为独立组件接入业务流程。选择模型时，应在相同任务和样本上比较判断质量、延迟与成本。
+          - link "查看官方介绍 ↗" [ref=f1e187] [cursor=pointer]:
+            - /url: https://docs.typesafe.ai/introduction
+        - heading "1.4 一次独立请求的完整形状" [level=3] [ref=f1e188]
+        - paragraph [ref=f1e189]: 下面的代码直接调用 Jev，打印三种判断结果，没有 Agent 循环。接上第 2 章的条件分支，就可以形成普通脚本或服务中的判断流程。
+        - generic [ref=f1e190]:
+          - generic [ref=f1e191]:
+            - generic [ref=f1e192]: Python · 可在项目根目录另存为脚本运行；调用 Jev API
+            - button "复制代码" [ref=f1e193] [cursor=pointer]
+          - code [ref=f1e195]: "from typesafe_sdk import Choice, Noul, Score from runtime import create_client with create_client() as client: result = client.system_one( state=\"支付接口持续报错，客户都无法付款，请尽快协助。\", questions={ \"team\": Choice( instructions=\"应该由哪个团队处理根本问题？\", criteria={\"engineering\": \"系统或接口故障\", \"billing\": \"扣款或账单争议\", \"other\": \"其他\"}), \"severity\": Score( instructions=\"故障影响程度如何？\", criteria=[\"不影响业务\", \"部分受影响但有替代方案\", \"核心业务全部阻塞\"]), \"human\": Noul(instructions=\"是否明确要求人工协助？\"), }, ) print(result.choices[\"team\"].choice) print(result.scores[\"severity\"].score) print(result.nouls[\"human\"].noul)"
+        - paragraph [ref=f1e196]:
+          - code [ref=f1e197]: questions
+          - text: 的键用于把请求和结果对应起来。例如
+          - code [ref=f1e198]: team
+          - text: 的答案在
+          - code [ref=f1e199]: result.choices["team"]
+          - text: 。键名本身不承担问题说明；实际判定内容写在
+          - code [ref=f1e200]: instructions
+          - text: 和
+          - code [ref=f1e201]: criteria
+          - text: 中。你也可以运行
+          - code [ref=f1e202]: .venv/bin/python main.py --json
+          - text: 查看模型、答案和用量等原始返回字段。
+        - generic [ref=f1e203]:
+          - strong [ref=f1e204]: 保留确定性规则。
+          - text: 比如“价格不超过 6000”用 Python 比较数字；“是否适合经常出差”才需要语义判断。展示结果可以使用界面或固定模板；需要开放式解释时，可按需接入生成模型。
+        - generic [ref=f1e205]:
+          - text: CHECKPOINT 01
+          - heading "把一个业务流程拆成判断、规则与输出" [level=4] [ref=f1e206]
+          - paragraph [ref=f1e207]: 选择一个脚本、后台服务或工作流，写出一个需要理解语义的判断、一个可以精确计算的规则，以及结果如何展示。再判断是否需要 Agent。
+          - group [ref=f1e208]:
+            - generic "参考思路：报销助手" [ref=f1e209] [cursor=pointer]
+        - generic [ref=f1e210] [cursor=pointer]:
+          - checkbox "我能独立使用 Jev，并说明何时需要 Agent" [ref=f1e211]
+          - text: 我能独立使用 Jev，并说明何时需要 Agent
+      - generic [ref=f1e212]:
+        - generic [ref=f1e213]:
+          - generic [ref=f1e214]: 基础概念
+          - generic [ref=f1e215]: 三个基础案例
+        - heading "第二章 三种判断原语" [level=2] [ref=f1e216]
+        - generic [ref=f1e217]: 类别、程度和条件对应不同的判断方式。先确定问题的含义，再选择返回值的类型。
+        - generic [ref=f1e218]:
+          - generic [ref=f1e219]:
+            - text: CHOICE
+            - heading "是哪一类？" [level=4] [ref=f1e220]
+            - paragraph [ref=f1e221]: 从固定选项中选择。物流 / 售后 / 无法确定。
+          - generic [ref=f1e222]:
+            - text: SCORE
+            - heading "处于什么程度？" [level=4] [ref=f1e223]
+            - paragraph [ref=f1e224]: 在有序标准上评分。无影响 / 有替代 / 完全阻塞。
+          - generic [ref=f1e225]:
+            - text: NOUL
+            - heading "条件成立吗？" [level=4] [ref=f1e226]
+            - paragraph [ref=f1e227]: 返回回答“是”的概率。是否明确要求人工？
+        - heading "2.1 Choice：类别要能区分，也要能兜底" [level=3] [ref=f1e228]
+        - paragraph [ref=f1e229]:
+          - text: Choice 的
+          - code [ref=f1e230]: criteria
+          - text: 是选项与描述的映射。选项不具有高低顺序；你不能因为售后排在物流后面，就认为它“更严重”。对当前主诉求进行单选时，要在描述里写清如何处理重叠、未知或多意图输入。
+        - generic [ref=f1e231]:
+          - generic [ref=f1e232]:
+            - generic [ref=f1e233]: Python · 结果读取示意，接续上面的 result
+            - button "复制代码" [ref=f1e234] [cursor=pointer]
+          - code [ref=f1e236]: "answer = result.choices[\"team\"] category = answer.choice # 选中的类别 distribution = answer.probabilities # 所有类别的概率 certainty = answer.confidence # 分布集中程度的摘要 if category == \"other\" or certainty < 0.5: action = \"先澄清\" else: action = \"进入对应处理流程\""
+        - paragraph [ref=f1e237]:
+          - code [ref=f1e238]: choice
+          - text: 是概率最高的选项，
+          - code [ref=f1e239]: probabilities
+          - text: 给出完整分布，
+          - code [ref=f1e240]: confidence
+          - text: 概括分布的集中程度。它不等于最大类别概率，也不是通过真实标签测得的正确率。即使模型十分确信选项为
+          - code [ref=f1e241]: other
+          - text: ，业务仍应走范围外处理。
+          - link "Choice 定义 ↗" [ref=f1e242] [cursor=pointer]:
+            - /url: https://docs.typesafe.ai/primitives/choice
+        - heading "2.2 Score：先定义等级，再解释分数" [level=3] [ref=f1e243]
+        - paragraph [ref=f1e244]:
+          - text: 给缺陷严重程度定义三个等级：0 = 不影响业务；1 = 部分功能受阻但有替代操作；2 = 核心业务阻塞。分数可以位于等级之间。假设等级概率为
+          - code [ref=f1e245]: "{0: 0.0, 1: 0.6, 2: 0.4}"
+          - text: ，得到的是：
+        - generic [ref=f1e246]: score = 0 × 0.0 + 1 × 0.6 + 2 × 0.4 = 1.4
+        - paragraph [ref=f1e247]:
+          - text: 这里的 1.4 是所定义尺度上的加权位置。它不是“有 70% 的概率严重”，也不是百分制成绩。不同标准下的分数不应直接比较。项目里的
+          - code [ref=f1e248]: case_score.py
+          - text: 分开评估严重程度与报告质量，因为报告写得完整并不代表问题更严重。
+        - generic [ref=f1e249]:
+          - generic [ref=f1e250]:
+            - generic [ref=f1e251]: Python · Score 结果读取
+            - button "复制代码" [ref=f1e252] [cursor=pointer]
+          - code [ref=f1e254]: "answer = result.scores[\"severity\"] expected = sum( level * probability for level, probability in answer.probabilities.items() ) print(answer.score, expected) # SDK 的等级键为整数；原始 JSON 中的等级键是字符串。"
+        - paragraph [ref=f1e255]:
+          - text: 原语定义与等级索引见
+          - link "Score 文档" [ref=f1e256] [cursor=pointer]:
+            - /url: https://docs.typesafe.ai/primitives/score
+          - text: 。
+        - heading "2.3 Noul：概率还要经过业务策略" [level=3] [ref=f1e257]
+        - paragraph [ref=f1e258]: Noul 判断“某个条件是否成立”，返回 0～1。接近 1 表示强烈支持“是”，接近 0 表示支持“否”，接近 0.5 表示判断不确定。它没有独立的 confidence 字段。低概率表示不支持当前命题，不等于一次请求失败。
+        - generic [ref=f1e259]:
+          - generic [ref=f1e260]:
+            - generic [ref=f1e261]: Python · 三段式策略示意；阈值需验证
+            - button "复制代码" [ref=f1e262] [cursor=pointer]
+          - code [ref=f1e264]: "p = result.nouls[\"human\"].noul if p >= 0.8: action = \"登记人工诉求\" elif p <= 0.2: action = \"未检测到明确人工诉求\" else: action = \"进一步确认\" # 不要写 if p: —— bool(0.01) 也会得到 True。"
+        - paragraph [ref=f1e265]:
+          - text: “是否表达紧迫性”是一个条件问题；“有多愤怒”是程度问题。若你想测量程度，应该定义有序 Score 标准。概率和程度解决的是不同问题。
+          - link "Noul 定义 ↗" [ref=f1e266] [cursor=pointer]:
+            - /url: https://docs.typesafe.ai/primitives/noul
+        - generic [ref=f1e267]:
+          - text: CHECKPOINT 02
+          - heading "选择原语，并说出依据" [level=4] [ref=f1e268]
+          - list [ref=f1e269]:
+            - listitem [ref=f1e270]: 用户是否明确要求转人工？
+            - listitem [ref=f1e271]: 这份缺陷报告包含多少定位信息，质量如何？
+            - listitem [ref=f1e272]: 应该由哪个团队接手？
+            - listitem [ref=f1e273]: 订单金额是否大于 500 元？
+          - group [ref=f1e274]:
+            - generic "展开参考答案" [ref=f1e275] [cursor=pointer]
+        - generic [ref=f1e276] [cursor=pointer]:
+          - checkbox "我能区分 Choice、Score 与 Noul，并正确读取结果" [ref=f1e277]
+          - text: 我能区分 Choice、Score 与 Noul，并正确读取结果
+      - generic [ref=f1e278]:
+        - generic [ref=f1e279]:
+          - generic [ref=f1e280]: 问题与标准
+          - generic [ref=f1e281]: advanced / mixed
+        - heading "第三章 设计判断问题" [level=2] [ref=f1e282]
+        - generic [ref=f1e283]: 清晰的问题需要一致的输入、具体的目标和能区分类别的标准。
+        - heading "3.1 state 是证据，criteria 是判定依据" [level=3] [ref=f1e284]
+        - paragraph [ref=f1e285]:
+          - code [ref=f1e286]: state
+          - text: 可以是文本，也可以是字典。把订单状态、用户消息、已确认的事实按结构放进去，比混在一大段提示词中更方便检查。问题应写得具体：把“看看这个客户怎么回事”改成“客户主要在咨询退货规则，还是已发起退款的进度”。
+        - paragraph [ref=f1e287]: 字段之间应一致。如果用户文本写“尚未申请退货”，订单对象却写“已签收”，模型面对的是矛盾证据。练习时修改文本，也要同步修改或移除过时的结构化字段。
+        - heading "3.2 用定义和排除条件澄清边界" [level=3] [ref=f1e288]
+        - generic [ref=f1e289]:
+          - generic [ref=f1e290]:
+            - generic [ref=f1e291]: Python · case_advanced.py / questions 字典节选
+            - button "复制代码" [ref=f1e292] [cursor=pointer]
+          - code [ref=f1e294]: "\"topic\": Choice( instructions={\"question\": \"客户主要在咨询什么？\", \"focus\": [\"message\", \"order\"]}, criteria={ \"policy\": {\"definition\": \"询问退货条件或规则\", \"exclude\": \"已发起退货后的进度咨询\"}, \"status\": {\"definition\": \"查询已有退货或退款的进度\", \"examples\": [\"退款到哪里了\", \"退货是否签收\"]}, \"other\": \"不属于以上类型\", }),"
+        - paragraph [ref=f1e295]:
+          - text: 这里的
+          - code [ref=f1e296]: definition
+          - text: 、
+          - code [ref=f1e297]: exclude
+          - text: 和
+          - code [ref=f1e298]: examples
+          - text: 是自定义描述字段，不是特殊执行指令。它们帮助表达业务含义，不能取代后续代码校验。先用简短描述；当相邻类别频繁混淆时，再增加边界说明和代表性例子。
+          - link "结构化标准 ↗" [ref=f1e299] [cursor=pointer]:
+            - /url: https://docs.typesafe.ai/primitives/advanced
+        - table [ref=f1e301]:
+          - rowgroup [ref=f1e302]:
+            - row [ref=f1e303]:
+              - columnheader "输入" [ref=f1e304]
+              - columnheader "边界解释" [ref=f1e305]
+              - columnheader "应检查什么" [ref=f1e306]
+          - rowgroup [ref=f1e307]:
+            - row [ref=f1e308]:
+              - cell "“拆封后还能退吗？”" [ref=f1e309]
+              - cell "退货资格与条件" [ref=f1e310]
+              - cell "应倾向 policy" [ref=f1e311]
+            - row [ref=f1e312]:
+              - cell "“退货签收四天了，退款到哪了？”" [ref=f1e313]
+              - cell "已有流程的处理进度" [ref=f1e314]
+              - cell "应倾向 status" [ref=f1e315]
+            - row [ref=f1e316]:
+              - cell "“能不能退？退了多久到账？”" [ref=f1e317]
+              - cell "可能同时包含两个诉求" [ref=f1e318]
+              - cell "单选规则是否足够；是否需要澄清" [ref=f1e319]
+        - heading "3.3 多个问题分别判断，组合留在代码中" [level=3] [ref=f1e320]
+        - paragraph [ref=f1e321]: 当工单里同时涉及团队、严重程度和人工诉求，可以在同一次请求中提出三个问题。每个问题独立看同一份 state，不能假设后一个问题已经读到前一个问题的答案。依赖答案的逻辑要在收到结果后由 Python 处理，或发起后续请求。
+        - generic [ref=f1e322]:
+          - generic [ref=f1e323]:
+            - generic [ref=f1e324]: Python · case_mixed.py / interpret 函数体节选
+            - button "复制代码" [ref=f1e325] [cursor=pointer]
+          - code [ref=f1e327]: "urgent = (result.choices[\"team\"].choice == \"engineering\" and result.choices[\"team\"].confidence >= 0.5 and result.scores[\"severity\"].score >= 1.5 and result.nouls[\"human\"].noul >= 0.8) return f\"建议加急转技术人工：{urgent}\""
+        - paragraph [ref=f1e328]: 这段组合逻辑表达的是“技术问题 + 达到严重程度门槛 + 明确要求人工”时建议加急。改变业务优先级时，可以直接调整代码中的条件。这个示例只是输出建议，不执行派单或退款。
+        - generic [ref=f1e329]:
+          - strong [ref=f1e330]: 把复合评分拆开。
+          - text: “重要又紧急、用户又生气”的综合评分难以解释。分别评估业务影响、时间紧迫性和情绪，再写出可审查的合并规则。
+        - generic [ref=f1e331]:
+          - text: LAB 03 / 修改并复测
+          - heading "修复一个混淆边界" [level=4] [ref=f1e332]
+          - paragraph [ref=f1e333]:
+            - text: 运行
+            - code [ref=f1e334]: case_advanced.py
+            - text: ，用表格中的三条输入替换 state。保留第一次结果，修改标准，再复测。记录修改影响了哪些样本，以及是否引入新的误判。
+          - group [ref=f1e335]:
+            - generic "参考答案" [ref=f1e336] [cursor=pointer]
+        - generic [ref=f1e337] [cursor=pointer]:
+          - checkbox "我能用定义、反例与独立问题改善标准" [ref=f1e338]
+          - text: 我能用定义、反例与独立问题改善标准
+      - generic [ref=f1e339]:
+        - generic [ref=f1e340]:
+          - generic [ref=f1e341]: 实战一
+          - generic [ref=f1e342]: 客服分流
+        - heading "第四章 客服分流" [level=2] [ref=f1e343]
+        - generic [ref=f1e344]: 用 Choice 识别诉求，再由代码选择业务处理分支；分支可以由函数、队列或 Agent 承接。
+        - heading "4.1 基础路径：普通客服系统也能使用" [level=3] [ref=f1e345]
+        - paragraph [ref=f1e346]: 用户消息 → Jev 分类 → 代码检查类别与置信度 → 返回物流、售后或澄清分支。普通后端可据此展示订单查询表单、返回售后规则，或把工单送入对应队列；缺订单号时用表单或固定提示补齐。这条流程不需要 Agent。
+        - heading "4.2 可选扩展：由专业 Agent 承接分支" [level=3] [ref=f1e347]
+        - paragraph [ref=f1e348]:
+          - text: 下面的
+          - code [ref=f1e349]: agent_case_router.py
+          - text: 展示 Agent 接入方式。客服入口每条消息都要先确认服务范围，因此这里的 Jev 调用由 Python 固定执行。它不依赖 Agent 自己决定是否检查。确定进入物流或售后后，再创建具有对应工具的专业 Agent。
+        - generic [ref=f1e350]:
+          - generic [ref=f1e351]: 用户消息
+          - text: →
+          - generic [ref=f1e352]: Jev Choice
+          - text: →
+          - generic [ref=f1e353]: select_route()
+          - text: →
+          - generic [ref=f1e354]: 专业 Agent 或澄清
+        - heading "4.3 从判断结果到流程分支" [level=3] [ref=f1e355]
+        - generic [ref=f1e356]:
+          - generic [ref=f1e357]:
+            - generic [ref=f1e358]: Python · agent_case_router.py / select_route
+            - button "复制代码" [ref=f1e359] [cursor=pointer]
+          - code [ref=f1e361]: "def select_route(answer, min_confidence=0.5): # 未达到阈值或类别不在允许范围时，进入澄清分支。 if not 0 <= min_confidence <= 1: raise ValueError('置信度阈值必须在 0～1 之间') if answer.confidence < min_confidence or answer.choice not in {'logistics', 'aftersales'}: return 'clarify' return answer.choice"
+        - paragraph [ref=f1e362]:
+          - text: 函数先验证阈值，再检查置信度和允许类别。它让未知类别也能进入澄清分支。边界使用
+          - code [ref=f1e363]: <
+          - text: ，所以置信度恰好等于阈值时允许进入专业分支。示例默认阈值为 0.5，实际使用时应根据验证样本和误判成本调整。
+        - generic [ref=f1e364]:
+          - generic [ref=f1e365]:
+            - text: LOGISTICS
+            - heading "物流 Agent" [level=4] [ref=f1e366]
+            - paragraph [ref=f1e367]:
+              - text: 可用工具是
+              - code [ref=f1e368]: lookup_order
+              - text: 。拿到完整订单号后查询演示物流，缺少订单号时先追问。
+          - generic [ref=f1e369]:
+            - text: AFTERSALES
+            - heading "售后 Agent" [level=4] [ref=f1e370]
+            - paragraph [ref=f1e371]:
+              - text: 可用工具是
+              - code [ref=f1e372]: lookup_return_policy
+              - text: 。解释退货规则和所需材料，不执行退款。
+        - paragraph [ref=f1e373]: 类别不明与参数缺失是两类问题：“查一下物流”已经足以确定分流方向，但没有订单号；“帮我处理一下”连服务方向都不明确。前者交给专业 Agent 追问参数，后者在入口澄清。
+        - heading "4.4 运行时观察完整证据链" [level=3] [ref=f1e374]
+        - generic [ref=f1e375]:
+          - generic [ref=f1e376]:
+            - generic [ref=f1e377]: Shell · 远程调用 Jev 与 Agent（进入澄清则跳过 Agent）
+            - button "复制代码" [ref=f1e378] [cursor=pointer]
+          - code [ref=f1e380]: .venv/bin/python agent_case_router.py "订单 DEMO-1001 到哪里了？" .venv/bin/python agent_case_router.py "我想退货，需要什么材料？" .venv/bin/python agent_case_router.py "帮我写一首诗。" .venv/bin/python agent_case_router.py "查物流，也问退货，两件事同样重要。" --min-confidence 0.8
+        - paragraph [ref=f1e381]: 先看类别概率与置信度，再看 Python 选择的分支，最后看工具调用和回复。模型可能没有按照你期待的方式分类；保留这一条输入，判断是问题定义含糊、上下文不足，还是模型本身的误判。
+        - generic [ref=f1e382]:
+          - strong [ref=f1e383]: 工具集合由代码控制，调用行为仍由 Agent 产生。
+          - text: “必须调用工具”写在提示词中，并不等于后端权限检查。真实订单接口还要验证身份、订单归属和参数。
+        - generic [ref=f1e384]:
+          - text: LAB 04 / 扩展路由
+          - heading "新增一个 billing 分支" [level=4] [ref=f1e385]
+          - paragraph [ref=f1e386]: 加入账单类别与只读账单规则工具。除了修改 Choice 标准，还需要改哪里？
+          - group [ref=f1e387]:
+            - generic "查看修改清单" [ref=f1e388] [cursor=pointer]
+        - paragraph [ref=f1e389]:
+          - text: 完整实现：
+          - link "agent_case_router.py" [ref=f1e390] [cursor=pointer]:
+            - /url: ../agent_case_router.py
+        - generic [ref=f1e391] [cursor=pointer]:
+          - checkbox "我能实现带澄清分支的前置路由" [ref=f1e392]
+          - text: 我能实现带澄清分支的前置路由
+      - generic [ref=f1e393]:
+        - generic [ref=f1e394]:
+          - generic [ref=f1e395]: 实战二
+          - generic [ref=f1e396]: 商品推荐
+        - heading "第五章 商品推荐" [level=2] [ref=f1e397]
+        - generic [ref=f1e398]: 先用价格过滤满足预算的商品，再比较它们与用户用途和偏好的匹配程度。
+        - heading "5.1 基础路径：表单与推荐接口" [level=3] [ref=f1e399]
+        - paragraph [ref=f1e400]: 表单收集用途和预算 → Python 校验并按价格过滤 → Jev 对候选评分 → 代码排序 → 页面展示结果。预算缺失时返回待补字段；没有候选时返回空列表。整个流程可以由普通接口完成，不需要 Agent 提取参数或生成回复。
+        - heading "5.2 可选扩展：把评估函数包装成 Agent 工具" [level=3] [ref=f1e401]
+        - paragraph [ref=f1e402]:
+          - text: 现有
+          - code [ref=f1e403]: agent_case_jev_tool.py
+          - text: 使用这一扩展。用户说：“预算不超过 6000，经常出差，主要办公，不玩游戏。”这次由 Agent 提取用途和预算，调用
+          - code [ref=f1e404]: evaluate_products(requirements, max_price)
+          - text: 。Jev 位于工具内部，只评估通过预算筛选的候选商品。
+        - generic [ref=f1e405]:
+          - generic [ref=f1e406]: 用户需求
+          - text: →
+          - generic [ref=f1e407]: Agent 调用工具
+          - text: →
+          - generic [ref=f1e408]: 价格过滤
+          - text: →
+          - generic [ref=f1e409]: Jev 评分
+          - text: →
+          - generic [ref=f1e410]: 排序与解释
+        - heading "5.3 硬约束先执行" [level=3] [ref=f1e411]
+        - table [ref=f1e413]:
+          - rowgroup [ref=f1e414]:
+            - row [ref=f1e415]:
+              - columnheader "示例商品（虚构）" [ref=f1e416]
+              - columnheader "价格" [ref=f1e417]
+              - columnheader "定位" [ref=f1e418]
+              - columnheader "预算 6000 时" [ref=f1e419]
+          - rowgroup [ref=f1e420]:
+            - row [ref=f1e421]:
+              - cell "P1 · 轻行本" [ref=f1e422]
+              - cell "4999 元" [ref=f1e423]
+              - cell "1.2 kg，办公与通勤" [ref=f1e424]
+              - cell "保留" [ref=f1e425]
+            - row [ref=f1e426]:
+              - cell "P2 · 游戏本" [ref=f1e427]
+              - cell "5999 元" [ref=f1e428]
+              - cell "2.5 kg，游戏与三维设计" [ref=f1e429]
+              - cell "保留" [ref=f1e430]
+            - row [ref=f1e431]:
+              - cell "P3 · 旗舰轻薄本" [ref=f1e432]
+              - cell "8999 元" [ref=f1e433]
+              - cell "1.1 kg，移动办公" [ref=f1e434]
+              - cell "排除" [ref=f1e435]
+        - generic [ref=f1e436]:
+          - generic [ref=f1e437]:
+            - generic [ref=f1e438]: Python · agent_case_jev_tool.py / 确定性过滤
+            - button "复制代码" [ref=f1e439] [cursor=pointer]
+          - code [ref=f1e441]: "def within_budget(max_price): # 数字大小用 Python 做确定性判断，不交给模型猜测。 return [product for product in PRODUCTS if product['price'] <= max_price]"
+        - paragraph [ref=f1e442]: 如果预算非正数，工具返回错误；如果没有候选，直接返回空商品列表，不请求 Jev。缺预算时，当前案例通过 Agent 提示词要求先追问。业务后端仍应校验模型传入的参数，不能默认模型一定忠实提取了用户意图。
+        - heading "5.4 一个候选一个问题，一次请求完成评分" [level=3] [ref=f1e443]
+        - generic [ref=f1e444]:
+          - generic [ref=f1e445]:
+            - generic [ref=f1e446]: Python · evaluate_products 函数内部节选
+            - button "复制代码" [ref=f1e447] [cursor=pointer]
+          - code [ref=f1e449]: "questions = { item['id']: Score( instructions={'question': 'candidate 与用户用途和偏好有多匹配？', 'candidate': item}, criteria=['与核心用途或明确偏好冲突', '满足部分需求但有明显取舍', '符合核心用途和明确偏好'], ) for item in candidates }"
+        - paragraph [ref=f1e450]:
+          - text: 每个问题的 instructions 带上对应商品，state 则提供完整用户需求。返回结果用商品 ID 对齐，再由 Python 按
+          - code [ref=f1e451]: match_score
+          - text: 降序排序。Agent 接收到的是商品事实、分数与置信度，最终解释应围绕这些事实展开。
+        - generic [ref=f1e452]:
+          - strong [ref=f1e453]: “排第一”不代表“值得推荐”。
+          - text: 如果所有候选都不适合，排序仍会产生第一名。案例中的排序没有设置最低匹配门槛，低匹配与低置信度由 Agent 在回复中说明。要确保不推荐不合适的商品，需要在工具中加入明确的过滤条件。
+        - heading "5.5 用四组输入检查不同分支" [level=3] [ref=f1e454]
+        - generic [ref=f1e455]:
+          - generic [ref=f1e456]:
+            - generic [ref=f1e457]: Shell · 远程 Agent 案例
+            - button "复制代码" [ref=f1e458] [cursor=pointer]
+          - code [ref=f1e460]: .venv/bin/python agent_case_jev_tool.py "预算6000元，出差办公，希望轻便。" .venv/bin/python agent_case_jev_tool.py "预算6000元，玩游戏，不在乎重量。" .venv/bin/python agent_case_jev_tool.py "推荐一台办公电脑。" .venv/bin/python agent_case_jev_tool.py "预算100元，推荐笔记本。"
+        - paragraph [ref=f1e461]: 对比前两条时，看需求如何改变排序；第三条应先问预算；第四条应返回无候选。评估推荐时同时检查：有没有超预算、有没有编造参数、推荐理由是否与候选数据一致。一个匹配分数不替生成模型的每句话背书。
+        - generic [ref=f1e462]:
+          - text: LAB 05 / 定义最低推荐门槛
+          - heading "如果最好的候选也很差，怎么办？" [level=4] [ref=f1e463]
+          - paragraph [ref=f1e464]: 在工具中增加最低匹配门槛：未达到时返回明确的“无推荐”结果。再单独设计低置信度的处理规则。
+          - group [ref=f1e465]:
+            - generic "参考思路" [ref=f1e466] [cursor=pointer]
+        - paragraph [ref=f1e467]:
+          - text: 完整实现：
+          - link "agent_case_jev_tool.py" [ref=f1e468] [cursor=pointer]:
+            - /url: ../agent_case_jev_tool.py
+          - text: · 动态构建问题的补充例子：
+          - link "case_matching.py" [ref=f1e469] [cursor=pointer]:
+            - /url: ../case_matching.py
+        - generic [ref=f1e470] [cursor=pointer]:
+          - checkbox "我能区分硬约束过滤、语义评分与生成解释" [ref=f1e471]
+          - text: 我能区分硬约束过滤、语义评分与生成解释
+      - generic [ref=f1e472]:
+        - generic [ref=f1e473]:
+          - generic [ref=f1e474]: 实战三
+          - generic [ref=f1e475]: 多轮排查
+        - heading "第六章 多轮信息检查" [level=2] [ref=f1e476]
+        - generic [ref=f1e477]: 每次补充信息后重新判断，代码决定继续收集信息还是进入排查阶段。
+        - heading "6.1 基础路径：表单或状态机推进流程" [level=3] [ref=f1e478]
+        - paragraph [ref=f1e479]: 保存用户提交的事实 → 用多个 Noul 检查环境、症状和步骤 → 代码列出缺失项 → 固定模板提示补充 → 再次提交后重检。信息齐全时，由普通函数查询手册并展示结果。多轮交互本身不要求 Agent；即使不使用聊天界面，也可以采用这套流程。
+        - heading "6.2 可选扩展：Agent 组织追问和工具调用" [level=3] [ref=f1e480]
+        - paragraph [ref=f1e481]:
+          - text: 下文的
+          - code [ref=f1e482]: agent_case_followup.py
+          - text: 为现有 Agent 版本。Jev 判断和代码门槛仍然独立，Agent 负责对话及可用工具的调用。
+        - heading "6.3 追问是状态变化的一部分" [level=3] [ref=f1e483]
+        - generic [ref=f1e484]:
+          - generic [ref=f1e485]:
+            - generic [ref=f1e486]: TURN 01 / 用户
+            - text: 报表导出有问题，帮我看一下。
+          - generic [ref=f1e487]:
+            - generic [ref=f1e488]: Agent / 示例回复
+            - text: 你使用什么环境或浏览器？执行了哪些操作，具体出现什么错误？
+          - generic [ref=f1e489]:
+            - generic [ref=f1e490]: TURN 02 / 用户
+            - text: 我用 macOS 上的 Safari 18。进入销售报表，选择九月，再点导出 PDF，就提示 HTTP 500。
+          - generic [ref=f1e491]:
+            - generic [ref=f1e492]: 下一步检查
+            - text: 重新检查环境、症状与步骤；齐全后提供手册工具。
+        - paragraph [ref=f1e493]: 第一轮缺少可用于排查的细节。第二轮新增的信息可能使流程进入下一阶段。每轮都重新判断，避免把第一轮的结论永久保留下来。
+        - heading "6.4 对话历史不等于用户事实" [level=3] [ref=f1e494]
+        - paragraph [ref=f1e495]:
+          - text: 案例维护两份数据。
+          - code [ref=f1e496]: messages
+          - text: 存放对话，供 Agent 保持上下文；
+          - code [ref=f1e497]: user_statements
+          - text: 只存用户发言，供 Jev 判断信息是否存在。如果 Agent 问“你用的是 Safari 吗？”，这句话不能被当作用户确认使用 Safari。
+        - generic [ref=f1e498]:
+          - generic [ref=f1e499]:
+            - generic [ref=f1e500]: Python · agent_case_followup.py / 原始函数
+            - button "复制代码" [ref=f1e501] [cursor=pointer]
+          - code [ref=f1e503]: "def missing_information(result, presence_threshold=0.8): # Noul 是“该信息存在”的概率。低于阈值先追问，不视为已经准备好。 if not 0 <= presence_threshold <= 1: raise ValueError('信息存在概率阈值必须在 0～1 之间') return [label for key, label in LABELS.items() if result.nouls[key].noul < presence_threshold]"
+        - paragraph [ref=f1e504]: 三个 Noul 分别检查环境、具体症状和操作步骤。任何一项概率低于门槛，就把相应中文标签加入缺失列表。等于阈值时视为满足。这是“可否继续”的策略，不是对用户事实真实性的外部验证。
+        - heading "6.5 用工具可用性表达流程状态" [level=3] [ref=f1e505]
+        - generic [ref=f1e506]:
+          - generic [ref=f1e507]:
+            - generic [ref=f1e508]: Python · 每轮判断后的工具选择（简化片段）
+            - button "复制代码" [ref=f1e509] [cursor=pointer]
+          - code [ref=f1e511]: "if missing: tools = [] instruction = \"只追问缺失信息：\" + \"、\".join(missing) else: tools = [lookup_troubleshooting] instruction = \"先调用手册工具，再依据用户事实提出建议。\" agent = create_agent( model=model, tools=tools, system_prompt=instruction )"
+        - paragraph [ref=f1e512]:
+          - text: 信息不足时，Agent 的工具列表为空；信息齐全时才提供
+          - code [ref=f1e513]: lookup_troubleshooting
+          - text: 。这种控制比仅在提示词中要求“不要过早查询”更明确，但也只限制了这里的可用工具，不构成完整的用户身份授权系统。
+        - generic [ref=f1e514]:
+          - generic [ref=f1e515]:
+            - generic [ref=f1e516]: Shell · 默认运行两轮预设消息，不等待键盘输入
+            - button "复制代码" [ref=f1e517] [cursor=pointer]
+          - code [ref=f1e519]: .venv/bin/python agent_case_followup.py .venv/bin/python agent_case_followup.py --scenario incomplete .venv/bin/python agent_case_followup.py --scenario complete --presence-threshold 0.9
+        - generic [ref=f1e520]:
+          - strong [ref=f1e521]: 区分症状、证据和根因。
+          - text: “HTTP 500”是一条具体症状，足以让症状字段更完整；它不能证明唯一故障原因。Agent 应依据手册建议下一步排查，不能声称已经修复。
+        - generic [ref=f1e522]:
+          - text: LAB 06 / 加入第三轮
+          - heading "逐项补充，而不是一次补齐" [level=4] [ref=f1e523]
+          - paragraph [ref=f1e524]: 修改预设 turns：第二轮只回答“我使用 Safari”，第三轮再补充错误和操作过程。观察每轮缺失列表与工具集合。
+          - group [ref=f1e525]:
+            - generic "进一步思考：用户纠正了信息" [ref=f1e526] [cursor=pointer]
+        - paragraph [ref=f1e527]:
+          - text: 完整实现：
+          - link "agent_case_followup.py" [ref=f1e528] [cursor=pointer]:
+            - /url: ../agent_case_followup.py
+        - generic [ref=f1e529] [cursor=pointer]:
+          - checkbox "我能维护用户事实，并用代码控制追问与工具开放" [ref=f1e530]
+          - text: 我能维护用户事实，并用代码控制追问与工具开放
+      - generic [ref=f1e531]:
+        - generic [ref=f1e532]:
+          - generic [ref=f1e533]: 验证与评估
+          - generic [ref=f1e534]: 离线与真实验证
+        - heading "第七章 验证与阈值实验" [level=2] [ref=f1e535]
+        - generic [ref=f1e536]: 分别验证模型判断、代码策略和业务执行；接入 Agent 时，再检查其工具调用与回复。
+        - heading "7.1 固定答案，才能单独观察阈值" [level=3] [ref=f1e537]
+        - paragraph [ref=f1e538]: 如果你同时改变阈值并重新请求模型，业务分支的变化可能来自两者。下面固定一份人工构造的回答，只改变业务阈值。页面实验完全本地执行，不请求 Jev。
+        - generic [ref=f1e539]:
+          - generic [ref=f1e540]:
+            - heading "阈值实验台" [level=4] [ref=f1e541]
+            - generic [ref=f1e542]: 离线 · 人工构造数据
+          - generic [ref=f1e543]: 选择固定回答
+          - combobox "选择固定回答" [ref=f1e544]:
+            - option "Choice：logistics，confidence = 0.65" [selected]
+            - option "Choice：unclear，confidence = 0.99"
+            - option "Noul：环境 0.95 / 症状 0.70 / 步骤 0.80"
+          - generic [ref=f1e545]:
+            - text: 分流置信度阈值
+            - strong [ref=f1e546]: "0.50"
+          - slider "分流置信度阈值 0.50" [ref=f1e547] [cursor=pointer]: "0.5"
+          - generic [ref=f1e548]:
+            - generic [ref=f1e549]: 0.00 / 较宽松
+            - generic [ref=f1e550]: 1.00 / 较严格
+          - generic [ref=f1e551]:
+            - strong [ref=f1e552]: 进入物流处理分支
+            - paragraph [ref=f1e553]: 0.65 ≥ 0.50，且 logistics 属于允许类别。
+          - paragraph [ref=f1e554]: 这只验证策略映射，不代表模型实测质量。Noul 模式检查信息是否存在，不把概率称作置信度。
+        - heading "7.2 判断、策略与执行，分别验证" [level=3] [ref=f1e555]
+        - table [ref=f1e557]:
+          - rowgroup [ref=f1e558]:
+            - row [ref=f1e559]:
+              - columnheader "验证层" [ref=f1e560]
+              - columnheader "想证明什么" [ref=f1e561]
+              - columnheader "使用什么证据" [ref=f1e562]
+          - rowgroup [ref=f1e563]:
+            - row [ref=f1e564]:
+              - cell "模型判断" [ref=f1e565]
+              - cell "语义分类或评分是否符合标准" [ref=f1e566]
+              - cell "真实 API 输出 + 人工标签" [ref=f1e567]
+            - row [ref=f1e568]:
+              - cell "代码策略" [ref=f1e569]
+              - cell "给定答案是否进入正确分支" [ref=f1e570]
+              - cell "固定回答、边界值、不联网测试" [ref=f1e571]
+            - row [ref=f1e572]:
+              - cell "业务执行" [ref=f1e573]
+              - cell "是否正确查询、展示结果或推进状态" [ref=f1e574]
+              - cell "函数返回、状态变化与界面输出" [ref=f1e575]
+            - row [ref=f1e576]:
+              - cell "Agent 行为（选学）" [ref=f1e577]
+              - cell "是否正确传参、调用工具与解释事实" [ref=f1e578]
+              - cell "实际工具轨迹与最终回复" [ref=f1e579]
+        - generic [ref=f1e580]:
+          - generic [ref=f1e581]:
+            - generic [ref=f1e582]: Shell · 不联网；需先安装依赖
+            - button "复制代码" [ref=f1e583] [cursor=pointer]
+          - code [ref=f1e585]: ".venv/bin/python -m unittest discover -s tests -v .venv/bin/python course_threshold_lab.py # 配置 TYPESAFE_API_KEY 后，直接运行 Jev 基础案例 python main.py --json python case_mixed.py"
+        - paragraph [ref=f1e586]: 仓库测试覆盖低置信度路由、未知订单、预算边界、空候选、非法预算、缺失信息，以及可配置阈值的边界和非法值。它们不证明 Jev 判断准确，也不证明 DeepSeek 每次都遵守提示词。
+        - heading "7.3 指标必须有分母" [level=3] [ref=f1e587]
+        - paragraph [ref=f1e588]: 假设一批 20 条路由样本中，12 条进入业务处理分支，8 条澄清；进入业务处理分支 的 12 条里有 2 条误分流。三个指标分别为：
+        - generic [ref=f1e589]:
+          - generic [ref=f1e590]:
+            - text: COVERAGE
+            - heading "60%" [level=4] [ref=f1e591]
+            - paragraph [ref=f1e592]: 自动处理覆盖率12 / 20
+          - generic [ref=f1e593]:
+            - text: CLARIFICATION
+            - heading "40%" [level=4] [ref=f1e594]
+            - paragraph [ref=f1e595]: 澄清率8 / 20
+          - generic [ref=f1e596]:
+            - text: MISROUTING
+            - heading "16.7%" [level=4] [ref=f1e597]
+            - paragraph [ref=f1e598]: 自动处理误分流率2 / 12
+        - paragraph [ref=f1e599]: 提高阈值可能减少误分流，也可能把更多本可处理的请求送去澄清。只看错误率容易忽略覆盖率下降。没有自动处理样本时，误分流率的分母为零，应记为“不适用”，不能写成 0%。
+        - paragraph [ref=f1e600]: 推荐流程重点检查预算违规、空候选处理和排序合理性；多轮流程重点检查缺信息时错误放行，以及信息齐全时多余追问。先在调参集确定规则，再用分开的验收集复核，避免只记住练习样本。
+        - heading "7.4 失败与耗时也属于结果" [level=3] [ref=f1e601]
+        - paragraph [ref=f1e602]: 接口超时表示没有拿到有效判断，不能伪装成 Noul=0，也不能编造成功工具结果。案例脚本会报告失败并退出。业务系统可设置重试、暂存或人工接待分支，并处理重复执行的影响。
+        - paragraph [ref=f1e603]:
+          - text: 本项目的 Jev 耗时是一次 SDK 请求的端到端时间，包含网络；Agent 耗时是一次
+          - code [ref=f1e604]: agent.invoke()
+          - text: ，可能含多次模型与工具调用。商品案例的 Agent 总时间已经包含工具里的 Jev 时间，两者不能相加。收集多条代表性请求后再讨论延迟分布。
+        - generic [ref=f1e605]:
+          - strong [ref=f1e606]: 最小运行记录。
+          - text: 样本 ID、输入与问题版本、请求和返回模型、原始答案、阈值、最终分支、工具调用次数、耗时、用量及人工期望。未采集的字段标为未采集。
+          - code [ref=f1e607]: jev-latest
+          - text: 是请求名称，记录返回模型有助于后续比较。
+        - generic [ref=f1e608]:
+          - text: LAB 07 / 解释取舍
+          - heading "为什么不把阈值直接调到 1？" [level=4] [ref=f1e609]
+          - paragraph [ref=f1e610]: 用实验台比较 0.50、0.65、0.80 和 1.00，再解释：更严格的门槛会给用户带来什么额外成本？
+          - group [ref=f1e611]:
+            - generic "参考思路" [ref=f1e612] [cursor=pointer]
+        - generic [ref=f1e613] [cursor=pointer]:
+          - checkbox "我能区分模型质量与策略正确性，并解释阈值取舍" [ref=f1e614]
+          - text: 我能区分模型质量与策略正确性，并解释阈值取舍
+      - generic [ref=f1e615]:
+        - generic [ref=f1e616]:
+          - generic [ref=f1e617]: 综合练习
+          - generic [ref=f1e618]: 综合项目
+        - heading "第八章 综合项目：工单助手" [level=2] [ref=f1e619]
+        - generic [ref=f1e620]: 组合团队分类、严重程度评分和信息检查，完成从接收工单到给出建议的流程。
+        - paragraph [ref=f1e621]: 你要处理的输入是技术支持工单。系统需要识别团队、判断故障影响，检查环境、症状和步骤，再选择补充信息、手册查询或人工接待建议。基础版使用普通 Python 函数和固定提示，输出结构化决策即可；Agent 对话作为选做。所有输出必须依据用户事实和只读演示数据。
+        - heading "8.1 先画出状态，再编写代码" [level=3] [ref=f1e622]
+        - generic [ref=f1e623]:
+          - generic [ref=f1e624]: 用户输入与已有事实
+          - text: →
+          - generic [ref=f1e625]: 一次 Jev 多问题判断
+          - text: →
+          - generic [ref=f1e626]: 代码策略
+          - text: →
+          - generic [ref=f1e627]: 澄清 / 补充信息 / 手册查询
+        - table [ref=f1e629]:
+          - rowgroup [ref=f1e630]:
+            - row [ref=f1e631]:
+              - columnheader "判断维度" [ref=f1e632]
+              - columnheader "建议类型" [ref=f1e633]
+              - columnheader "如何进入策略" [ref=f1e634]
+          - rowgroup [ref=f1e635]:
+            - row [ref=f1e636]:
+              - cell "团队与服务范围" [ref=f1e637]
+              - cell "Choice" [ref=f1e638]
+              - cell "未知或低置信度时先澄清" [ref=f1e639]
+            - row [ref=f1e640]:
+              - cell "故障影响" [ref=f1e641]
+              - cell "Score" [ref=f1e642]
+              - cell "形成优先级建议，不代替信息检查" [ref=f1e643]
+            - row [ref=f1e644]:
+              - cell "环境、症状、操作步骤" [ref=f1e645]
+              - cell "三个 Noul" [ref=f1e646]
+              - cell "缺少任何必要信息时追问" [ref=f1e647]
+            - row [ref=f1e648]:
+              - cell "工具权限与参数" [ref=f1e649]
+              - cell "代码" [ref=f1e650]
+              - cell "校验查询参数与权限；Agent 版还控制可用工具" [ref=f1e651]
+        - generic [ref=f1e652]:
+          - generic [ref=f1e653]:
+            - generic [ref=f1e654]: Python · 待实现的决策函数
+            - button "复制代码" [ref=f1e655] [cursor=pointer]
+          - code [ref=f1e657]: "def decide_next_step(result): # 根据以下规则实现决策，并用固定回答验证各个分支。 # 1. 先处理 unknown / other 或低置信度 # 2. 检查环境、症状、步骤是否齐全 # 3. 决定是否查询手册；严重程度用于优先级建议 # 4. 返回可检查的决策，不在这里生成自然语言回复 raise NotImplementedError(\"请实现并补充固定回答测试\")"
+        - paragraph [ref=f1e658]:
+          - text: 补全
+          - code [ref=f1e659]: decide_next_step()
+          - text: ，先参考
+          - code [ref=f1e660]: case_mixed.py
+          - text: 定义多个问题，再用普通函数处理补充信息和查询。选做 Agent 版时，可参考
+          - code [ref=f1e661]: agent_case_followup.py
+          - text: 的逐轮控制。
+        - heading "8.2 实现步骤" [level=3] [ref=f1e662]
+        - generic [ref=f1e663]:
+          - generic [ref=f1e664]:
+            - generic [ref=f1e665]: 01 / 定义
+            - text: 编写问题与判断标准
+          - generic [ref=f1e666]:
+            - generic [ref=f1e667]: 02 / 串联
+            - text: 实现信息补充与手册查询
+          - generic [ref=f1e668]:
+            - generic [ref=f1e669]: 03 / 补全
+            - text: 处理范围外与调用失败
+          - generic [ref=f1e670]:
+            - generic [ref=f1e671]: 04 / 验证
+            - text: 运行样本并分析差异
+        - paragraph [ref=f1e672]: 先跑通“缺信息 → 固定提示 → 补充 → 查询手册”，再加入范围外和调用失败分支。分别使用正常、缺信息、模糊与越界输入检查流程，并记录预期与实际行为的差异。
+        - heading "8.3 项目交付" [level=3] [ref=f1e673]
+        - paragraph [ref=f1e674]: 基础交付不要求 LangChain、DeepSeek 或 Agent。先完成独立的 Jev 判断与代码决策闭环；选做 Agent 版时，额外提供工具调用轨迹和回复事实核对。
+        - list [ref=f1e675]:
+          - listitem [ref=f1e676]:
+            - strong [ref=f1e677]: 可运行代码与说明：
+            - text: 配置方式、启动命令、示例输入，不包含 API Key。
+          - listitem [ref=f1e678]:
+            - strong [ref=f1e679]: 至少 12 条人工标注样本：
+            - text: 正常、缺失、模糊、越界四组，每组至少 3 条。另用不联网替身模拟 API 失败。
+          - listitem [ref=f1e680]:
+            - strong [ref=f1e681]: 运行记录：
+            - text: 期望行为、原始判断、实际分支、调用次数、耗时及差异原因。
+          - listitem [ref=f1e682]:
+            - strong [ref=f1e683]: 一页总结：
+            - text: 最常见的错误、阈值选择理由和下一步改进方案。
+        - generic [ref=f1e684]:
+          - text: FINAL REVIEW
+          - heading "交付前，用四个问题检查你的设计" [level=4] [ref=f1e685]
+          - list [ref=f1e686]:
+            - listitem [ref=f1e687]: 如果 Jev 很不确定，系统下一步做什么？
+            - listitem [ref=f1e688]: 如果用户补充或纠正了事实，哪些判断会重新执行？
+            - listitem [ref=f1e689]: 如果候选项全部不适合，系统是否仍然推荐一个？
+            - listitem [ref=f1e690]: 如果模型或工具调用失败，用户是否会误以为成功？
+        - generic [ref=f1e691] [cursor=pointer]:
+          - checkbox "我已完成综合设计，并准备提交实现与验证记录" [ref=f1e692]
+          - text: 我已完成综合设计，并准备提交实现与验证记录
+      - generic [ref=f1e693]:
+        - generic [ref=f1e694]: 随时查阅
+        - heading "附录 速查与参考" [level=2] [ref=f1e695]
+        - table [ref=f1e697]:
+          - rowgroup [ref=f1e698]:
+            - row [ref=f1e699]:
+              - columnheader "需求" [ref=f1e700]
+              - columnheader "选择" [ref=f1e701]
+              - columnheader "落地位置" [ref=f1e702]
+          - rowgroup [ref=f1e703]:
+            - row [ref=f1e704]:
+              - cell "每条请求都要检查服务范围" [ref=f1e705]
+              - cell "Choice + 阈值" [ref=f1e706]
+              - cell "普通服务入口、工作流节点；也可作为 Agent 前置检查" [ref=f1e707]
+            - row [ref=f1e708]:
+              - cell "按语义匹配程度排序候选" [ref=f1e709]
+              - cell "Score + 硬约束过滤" [ref=f1e710]
+              - cell "推荐接口、批处理脚本；也可包装成 Agent 工具" [ref=f1e711]
+            - row [ref=f1e712]:
+              - cell "补充信息后才能继续" [ref=f1e713]
+              - cell "多个 Noul + 代码组合" [ref=f1e714]
+              - cell "表单提交后、状态机节点或每轮对话前" [ref=f1e715]
+            - row [ref=f1e716]:
+              - cell "精确金额、身份或资源权限检查" [ref=f1e717]
+              - cell "确定性业务逻辑" [ref=f1e718]
+              - cell "业务代码与后端接口" [ref=f1e719]
+            - row [ref=f1e720]:
+              - cell "展示结果、生成解释" [ref=f1e721]
+              - cell "固定模板；需要自由文本时用生成式模型" [ref=f1e722]
+              - cell "界面或服务；需要动态工具编排时可用 Agent" [ref=f1e723]
+        - heading "配套资料" [level=3] [ref=f1e724]
+        - paragraph [ref=f1e725]:
+          - link "实验手册" [ref=f1e726] [cursor=pointer]:
+            - /url: COURSE_LABS.md
+          - text: ·
+          - link "安装与运行" [ref=f1e727] [cursor=pointer]:
+            - /url: ../README.md
+          - text: ·
+          - link "离线实验源码" [ref=f1e728] [cursor=pointer]:
+            - /url: ../course_threshold_lab.py
+        - heading "官方参考" [level=3] [ref=f1e729]
+        - paragraph [ref=f1e730]:
+          - link "Jev 介绍" [ref=f1e731] [cursor=pointer]:
+            - /url: https://docs.typesafe.ai/introduction
+          - text: ·
+          - link "快速入门" [ref=f1e732] [cursor=pointer]:
+            - /url: https://docs.typesafe.ai/introduction/quickstart
+          - text: ·
+          - link "Choice" [ref=f1e733] [cursor=pointer]:
+            - /url: https://docs.typesafe.ai/primitives/choice
+          - text: ·
+          - link "Score" [ref=f1e734] [cursor=pointer]:
+            - /url: https://docs.typesafe.ai/primitives/score
+          - text: ·
+          - link "Noul" [ref=f1e735] [cursor=pointer]:
+            - /url: https://docs.typesafe.ai/primitives/noul
+          - text: ·
+          - link "结构化标准" [ref=f1e736] [cursor=pointer]:
+            - /url: https://docs.typesafe.ai/primitives/advanced
+      - generic [ref=f1e737]:
+        - generic [ref=f1e738]: JEV / DEVELOPER FIELD GUIDE从语义判断，到可验证的业务行为。
+        - generic [ref=f1e739]:
+          - text: 学员版 · 2026.09
+          - link "返回开头 ↑" [ref=f1e740] [cursor=pointer]:
+            - /url: "#intro"
+      - status [ref=f1e741]

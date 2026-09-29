@@ -6,7 +6,8 @@ from runtime import create_client
 
 
 def main():
-    text = "Hello, world! 你好，Jev！"
+    # text = "Hello, world! 你好，Jev！"
+    text = "请帮我查询订单的物流进度。"
     with create_client() as client:
         result = client.system_one(
             state=text,

@@ -1,0 +1,107 @@
+- generic [active] [ref=f1e1]:
+  - link "跳到实验区" [ref=f1e2] [cursor=pointer]:
+    - /url: "#workspace"
+  - generic [ref=f1e3]:
+    - generic [ref=f1e4]:
+      - generic [ref=f1e5]:
+        - generic [ref=f1e6]: LESS GUESSWORK. MORE SIGNAL.
+        - heading "把语言，变成明确的判断。" [level=1] [ref=f1e7]
+        - paragraph [ref=f1e8]: 一个问题，一组标准。探索 Jev 的三种结构化输出。
+      - generic [ref=f1e9]:
+        - text: 01 — 03
+        - paragraph [ref=f1e10]: 判断 · 选择 · 评分
+    - region "运行环境" [ref=f1e11]:
+      - generic [ref=f1e12]:
+        - generic [ref=f1e13]: "01"
+        - generic [ref=f1e14]:
+          - text: 运行环境
+          - heading "从一个示例开始" [level=2] [ref=f1e15]
+      - generic [ref=f1e16]:
+        - generic [ref=f1e17]: TYPESAFE API KEY 服务端配置
+        - textbox "TYPESAFE API KEY 服务端配置" [ref=f1e18]: 已配置服务端 API Key
+        - generic [ref=f1e19]: 点击运行后，后端会将输入发送给 Jev 进行判断。
+      - generic [ref=f1e20]:
+        - generic [ref=f1e21]: 模型
+        - textbox "模型" [ref=f1e22]: jev-latest
+        - generic [ref=f1e23]: 通过后端调用
+    - main [ref=f1e24]:
+      - region [ref=f1e25]:
+        - generic [ref=f1e26]:
+          - generic [ref=f1e27]:
+            - text: 输入配置
+            - heading "定义判断任务" [level=2] [ref=f1e28]
+          - generic [ref=f1e29]: 1 question / evaluation
+        - generic [ref=f1e30]:
+          - tablist "判断模式" [ref=f1e31]:
+            - tab "? 判断NOUL" [selected] [ref=f1e32] [cursor=pointer]:
+              - generic [ref=f1e33]: "?"
+              - generic [ref=f1e34]:
+                - strong [ref=f1e35]: 判断
+                - text: NOUL
+            - tab "↗ 选择CHOICE" [ref=f1e37] [cursor=pointer]:
+              - generic [ref=f1e38]: ↗
+              - generic [ref=f1e39]:
+                - strong [ref=f1e40]: 选择
+                - text: CHOICE
+            - tab "# 评分SCORE" [ref=f1e41] [cursor=pointer]:
+              - generic [ref=f1e42]: "#"
+              - generic [ref=f1e43]:
+                - strong [ref=f1e44]: 评分
+                - text: SCORE
+          - tabpanel "? 判断NOUL" [ref=f1e45]:
+            - paragraph [ref=f1e46]: 适合有明确是 / 否边界的问题。Jev 返回回答为 true 的概率。
+            - generic [ref=f1e47]:
+              - generic [ref=f1e48]: 试试一个场景
+              - combobox "试试一个场景" [ref=f1e49]:
+                - option "内容审核 · 公开发布" [selected]
+                - option "客服条件 · 人工接待"
+            - generic [ref=f1e50]:
+              - generic [ref=f1e51]:
+                - generic [ref=f1e52]: State / context 待分析内容
+                - generic [ref=f1e54]: TEXT
+              - textbox "State / context 待分析内容" [ref=f1e55]: 大家好！我们将在本周五下午举办产品分享会，欢迎感兴趣的同学报名参加，一起交流使用心得。
+              - generic [ref=f1e56]:
+                - generic [ref=f1e57]: ✓ 已填写文本
+                - generic [ref=f1e58]: 43 字符
+            - generic [ref=f1e59]:
+              - generic [ref=f1e60]:
+                - generic [ref=f1e61]: Instructions 问题
+                - generic [ref=f1e62]: 你希望 Jev 判断什么？
+              - textbox "Instructions 问题" [ref=f1e63]: 这条消息是否适合公开发布？
+            - generic [ref=f1e64]:
+              - generic [ref=f1e65]:
+                - heading "Criteria 判定标准" [level=3] [ref=f1e66]
+                - generic [ref=f1e68]: 定义 true / false 各自代表什么
+              - generic [ref=f1e69]:
+                - generic [ref=f1e70]:
+                  - generic [ref=f1e71]: "TRUE"
+                  - textbox "true 判定标准" [ref=f1e72]: 内容清晰、友好，不包含攻击性或不适合公开的信息。
+                - generic [ref=f1e73]:
+                  - generic [ref=f1e74]: "FALSE"
+                  - textbox "false 判定标准" [ref=f1e75]: 包含攻击性、误导性，或不适合公开的敏感信息。
+            - generic [ref=f1e76]:
+              - button "↺ 恢复示例" [ref=f1e77] [cursor=pointer]
+              - button "运行判断 ↗" [ref=f1e78] [cursor=pointer]
+      - complementary [ref=f1e79]:
+        - region [ref=f1e80]:
+          - generic [ref=f1e81]:
+            - generic [ref=f1e82]:
+              - text: 观察结构化输出
+              - heading "结果" [level=2] [ref=f1e83]
+            - status [ref=f1e84]: 等待运行
+          - generic [ref=f1e85]:
+            - tablist "结果展示" [ref=f1e86]:
+              - tab "可视化" [selected] [ref=f1e87] [cursor=pointer]
+              - tab "JSON 结果" [ref=f1e88] [cursor=pointer]
+            - tabpanel "可视化" [ref=f1e89]:
+              - generic [ref=f1e90]:
+                - generic [ref=f1e91]:
+                  - generic [ref=f1e92]: 本次问题
+                  - generic [ref=f1e93]: 判断
+                - heading "运行后查看当前输入的模型判断" [level=3] [ref=f1e94]
+                - group [ref=f1e95]:
+                  - generic "查看 context / criteria" [ref=f1e96] [cursor=pointer]
+              - generic [ref=f1e97]: 填写内容、问题和标准，然后点击“运行判断”。
+              - generic [ref=f1e98]:
+                - generic [ref=f1e99]: ↳
+                - paragraph [ref=f1e100]: Noul 返回的是概率，而不是布尔值。本页以 0.80 为展示阈值；业务阈值应结合实际样本确定。

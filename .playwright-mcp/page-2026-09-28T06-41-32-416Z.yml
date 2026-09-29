@@ -1,0 +1,144 @@
+- generic [active] [ref=e1]:
+  - link "跳到实验区" [ref=e2] [cursor=pointer]:
+    - /url: "#workspace"
+  - generic [ref=e3]:
+    - banner [ref=e4]:
+      - link "Jev 判断实验室首页" [ref=e5] [cursor=pointer]:
+        - /url: playground.html
+        - text: jev.
+      - generic [ref=e7]: 判断实验室 PLAYGROUND
+      - generic [ref=e8]:
+        - generic [ref=e9]: 静态演示
+        - link "开发者讲义 ↗" [ref=e10] [cursor=pointer]:
+          - /url: course.html
+    - generic [ref=e11]:
+      - generic [ref=e12]:
+        - generic [ref=e13]: LESS GUESSWORK. MORE SIGNAL.
+        - heading "把语言，变成明确的判断。" [level=1] [ref=e14]
+        - paragraph [ref=e15]: 一个问题，一组标准。探索 Jev 的三种结构化输出。
+      - generic [ref=e16]:
+        - text: 01 — 03
+        - paragraph [ref=e17]: 判断 · 选择 · 评分
+    - region "运行环境" [ref=e18]:
+      - generic [ref=e19]:
+        - generic [ref=e20]: "01"
+        - generic [ref=e21]:
+          - text: 运行环境
+          - heading "从一个示例开始" [level=2] [ref=e22]
+      - generic [ref=e23]:
+        - generic [ref=e24]: TYPESAFE API KEY 预留配置
+        - textbox "TYPESAFE API KEY 预留配置" [disabled] [ref=e25]:
+          - /placeholder: 静态预览，无需填写 API Key
+        - generic [ref=e26]: 当前使用本地示例数据，不发送网络请求。
+    - main [ref=e27]:
+      - region [ref=e28]:
+        - generic [ref=e30]:
+          - text: 问题构建器
+          - heading [level=2] [ref=e31]:
+            - text: 塑造
+            - emphasis [ref=e32]: signal
+        - generic [ref=e33]:
+          - tablist "判断模式" [ref=e34]:
+            - tab "? 判断NOUL" [selected] [ref=e35] [cursor=pointer]:
+              - generic [ref=e36]: "?"
+              - generic [ref=e37]:
+                - strong [ref=e38]: 判断
+                - text: NOUL
+            - tab "↗ 选择CHOICE" [ref=e40] [cursor=pointer]:
+              - generic [ref=e41]: ↗
+              - generic [ref=e42]:
+                - strong [ref=e43]: 选择
+                - text: CHOICE
+            - tab "# 评分SCORE" [ref=e44] [cursor=pointer]:
+              - generic [ref=e45]: "#"
+              - generic [ref=e46]:
+                - strong [ref=e47]: 评分
+                - text: SCORE
+          - tabpanel "? 判断NOUL" [ref=e48]:
+            - paragraph [ref=e49]: 适合有明确是 / 否边界的问题。Jev 返回回答为 true 的概率。
+            - generic [ref=e50]:
+              - generic [ref=e51]: 试试一个场景
+              - combobox "试试一个场景" [ref=e52]:
+                - option "内容审核 · 公开发布" [selected]
+                - option "客服条件 · 人工接待"
+            - generic [ref=e53]:
+              - generic [ref=e54]:
+                - generic [ref=e55]: Instructions 问题
+                - generic [ref=e56]: 你希望 Jev 判断什么？
+              - textbox "Instructions 问题" [ref=e57]: 这条消息是否适合公开发布？
+            - generic [ref=e58]:
+              - generic [ref=e59]:
+                - heading "Criteria 判定标准" [level=3] [ref=e60]
+                - generic [ref=e62]: 定义 true / false 各自代表什么
+              - generic [ref=e63]:
+                - generic [ref=e64]:
+                  - generic [ref=e65]: "TRUE"
+                  - textbox "true 判定标准" [ref=e66]: 内容清晰、友好，不包含攻击性或不适合公开的信息。
+                - generic [ref=e67]:
+                  - generic [ref=e68]: "FALSE"
+                  - textbox "false 判定标准" [ref=e69]: 包含攻击性、误导性，或不适合公开的敏感信息。
+            - generic [ref=e70]:
+              - generic [ref=e71]:
+                - generic [ref=e72]: State / context
+                - generic [ref=e74]: TEXT
+              - textbox "State / context" [ref=e75]: 大家好！我们将在本周五下午举办产品分享会，欢迎感兴趣的同学报名参加，一起交流使用心得。
+              - generic [ref=e76]:
+                - generic [ref=e77]: ✓ 已填写文本
+                - generic [ref=e78]: 43 字符
+            - paragraph [ref=e79]: 可以编辑输入体验构建流程；演示结果固定，不随文本推理。
+            - generic [ref=e80]:
+              - button "↺ 恢复示例" [ref=e81] [cursor=pointer]
+              - button "运行示例 ↗" [ref=e82] [cursor=pointer]
+      - complementary [ref=e83]:
+        - region [ref=e84]:
+          - generic [ref=e85]:
+            - generic [ref=e86]:
+              - text: 观察结构化输出
+              - heading "结果" [level=2] [ref=e87]
+            - status [ref=e88]: 固定示例
+          - generic [ref=e89]:
+            - tablist "结果展示" [ref=e90]:
+              - tab "可视化" [selected] [ref=e91] [cursor=pointer]
+              - tab "JSON 示例" [ref=e92] [cursor=pointer]
+            - tabpanel "可视化" [ref=e93]:
+              - generic [ref=e94]:
+                - generic [ref=e95]:
+                  - generic [ref=e96]: 本次问题
+                  - generic [ref=e97]: 判断
+                - heading "这条消息是否适合公开发布？" [level=3] [ref=e98]
+                - group [ref=e99]:
+                  - generic "查看 context / criteria" [ref=e100] [cursor=pointer]
+              - generic [ref=e101]:
+                - generic [ref=e102]:
+                  - generic [ref=e103]: EVALUATION
+                  - generic [ref=e104]: NOUL
+                - generic [ref=e105]:
+                  - strong [ref=e106]: "TRUE"
+                  - generic [ref=e107]: 85%
+                - generic [ref=e110]:
+                  - generic [ref=e111]: true 概率
+                  - generic [ref=e112]: false 概率 15%
+              - generic [ref=e113]:
+                - generic [ref=e114]: ↳
+                - paragraph [ref=e115]: Noul 返回的是概率，而不是布尔值。本例以 0.80 为展示阈值，将 0.85 展示为 TRUE；业务阈值应结合实际样本确定。
+            - generic [ref=e116]:
+              - generic [ref=e117]: jev-latest / 本地示例
+              - generic [ref=e118]: 未调用 API · 无用量
+        - generic [ref=e119]:
+          - text: 选对模式，让问题更清楚
+          - generic [ref=e120]:
+            - generic [ref=e121]:
+              - text: 01 / NOUL
+              - heading "是不是？" [level=3] [ref=e122]
+              - paragraph [ref=e123]: 条件成立的概率
+            - generic [ref=e124]:
+              - text: 02 / CHOICE
+              - heading "是哪一类？" [level=3] [ref=e125]
+              - paragraph [ref=e126]: 无序选项中的选择
+            - generic [ref=e127]:
+              - text: 03 / SCORE
+              - heading "程度如何？" [level=3] [ref=e128]
+              - paragraph [ref=e129]: 有序尺度上的分数
+    - contentinfo [ref=e130]:
+      - generic [ref=e131]: jev. 让每一次判断都有迹可循。
+      - generic [ref=e132]: 界面原型 / 数据仅用于展示
