@@ -527,6 +527,9 @@ from runtime import create_client
 
 
 def build_question():
+    &quot;&quot;&quot;用 Choice 定义客户主要诉求的分类问题，一次选择一个服务方向。&quot;&quot;&quot;
+    # instructions 说明总体判断规则，criteria 明确各类别的业务边界。
+    # unclear 表示还没问清楚，other 表示已问清楚但不在当前服务范围。
     return Choice(
         instructions=(
             &quot;根据客户当前主要想办的事分类，不要只匹配关键词。&quot;
@@ -545,17 +548,23 @@ def build_question():
 
 
 def select_route(answer, min_confidence=0.5):
+    &quot;&quot;&quot;将模型分类转成业务分支，不确定或不符合约定的结果统一进入澄清。&quot;&quot;&quot;
+    # 0.5 是教学初始值；置信度门槛不等于所选类别的概率或正确率保证。
     if not 0 &lt;= min_confidence &lt;= 1:
         raise ValueError(&quot;置信度阈值必须在 0～1 之间&quot;)
     allowed = {&quot;logistics&quot;, &quot;aftersales&quot;, &quot;unclear&quot;, &quot;other&quot;}
+    # 只接受已定义的类别，防止未知类别直接流入后续业务处理。
     if answer.choice not in allowed:
         return &quot;clarify&quot;
+    # 无效或低置信度结果需要确认；使用 &lt;，因此等于门槛时允许通过。
     if not 0 &lt;= answer.confidence &lt;= 1 or answer.confidence &lt; min_confidence:
         return &quot;clarify&quot;
+    # 即使置信度很高，unclear 仍表示主要诉求不明，必须继续澄清。
     return &quot;clarify&quot; if answer.choice == &quot;unclear&quot; else answer.choice
 
 
 def build_response(route):
+    &quot;&quot;&quot;按业务分支选择固定的队列建议和提示文案，不额外生成回复。&quot;&quot;&quot;
     # 输出建议，由调用方据此展示入口；这里没有真正入队或执行售后。
     responses = {
         &quot;logistics&quot;: (&quot;logistics_queue&quot;, &quot;建议进入物流服务，请在订单列表选择要查询的订单。&quot;),
@@ -564,40 +573,49 @@ def build_response(route):
         &quot;other&quot;: (&quot;general_queue&quot;, &quot;当前入口处理物流和售后，其他需求建议进入综合服务。&quot;),
         &quot;manual_review&quot;: (&quot;general_queue&quot;, &quot;暂时无法完成自动分流，建议进入综合服务人工确认。&quot;),
     }
+    # 澄清分支的队列为 None，表示需要先确认诉求，再确定服务入口。
     queue, reply = responses[route]
     return {&quot;route&quot;: route, &quot;suggested_queue&quot;: queue, &quot;reply&quot;: reply}
 
 
 def main():
+    &quot;&quot;&quot;读取客户消息，调用 Jev 分类，并以 JSON 输出判断和分流建议。&quot;&quot;&quot;
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(&quot;message&quot;, nargs=&quot;?&quot;, default=&quot;订单还没收到，我不想等了，想申请退款。&quot;)
     parser.add_argument(&quot;--min-confidence&quot;, type=float, default=0.5)
     args = parser.parse_args()
+    # 1. 在请求模型前检查空消息和非法阈值，避免无意义的远程调用。
     if not args.message.strip():
         parser.error(&quot;消息不能为空&quot;)
     if not 0 &lt;= args.min_confidence &lt;= 1:
         parser.error(&quot;置信度阈值必须在 0～1 之间&quot;)
 
     try:
+        # 2. 复用客户端配置读取 API Key；state 是客户原话，intent 是问题标识。
         with create_client() as client:
             result = client.system_one(
                 state=args.message,
                 questions={&quot;intent&quot;: build_question()},
             )
+        # 3. 用相同的问题标识读取答案，再由 Python 选择分支和固定提示。
         answer = result.choices[&quot;intent&quot;]
         output = build_response(select_route(answer, args.min_confidence))
+        # 保留原始类别、置信度和概率分布，便于核对模型判断与代码决策。
         output[&quot;judgment&quot;] = {
             &quot;choice&quot;: answer.choice,
             &quot;confidence&quot;: answer.confidence,
             &quot;probabilities&quot;: answer.probabilities,
         }
     except (TypeSafeError, ValueError) as error:
+        # 请求或配置失败表示未获得有效判断，不能伪装成客户诉求不明确。
+        # 返回人工确认建议；judgment 为 None，不编造分类结果。
         output = build_response(&quot;manual_review&quot;)
         output[&quot;judgment&quot;] = None
         output[&quot;error_type&quot;] = type(error).__name__
         print(json.dumps(output, ensure_ascii=False, indent=2))
-        return 1
+        return 1  # 非零退出码方便调用方识别运行失败。
 
+    # 4. 附上本次使用的门槛；保留中文并缩进显示，方便终端阅读。
     output[&quot;min_confidence&quot;] = args.min_confidence
     print(json.dumps(output, ensure_ascii=False, indent=2))
     return 0
@@ -679,6 +697,8 @@ PRODUCTS = [
     {&quot;id&quot;: &quot;P3&quot;, &quot;name&quot;: &quot;旗舰轻薄本&quot;, &quot;price&quot;: 8999, &quot;weight_kg&quot;: 1.1,
      &quot;description&quot;: &quot;适合移动办公，轻便且性能充足&quot;},
 ]
+# 所有商品共用同一把尺子：列表按匹配程度从低到高排列，对应等级 0、1、2。
+# 返回的 score 可以是小数，表示匹配程度，不是购买概率或商品质量分。
 CRITERIA = [
     &quot;与用户核心用途或明确偏好冲突&quot;,
     &quot;满足部分需求，但存在明显取舍&quot;,
@@ -689,6 +709,9 @@ MIN_CONFIDENCE = 0.5  # 与匹配分数不同，单独控制判断可靠性。
 
 
 def build_questions(candidates):
+    &quot;&quot;&quot;为每件预算内商品创建一个 Score 问题，合并到一次 Jev 请求中。&quot;&quot;&quot;
+    # 以商品 ID 为问题键，返回后可按 ID 找到对应评分，不依赖返回顺序。
+    # 商品资料放在 instructions，用户需求由 recommend() 放在 state。
     return {
         item[&quot;id&quot;]: Score(
             instructions={
@@ -702,33 +725,43 @@ def build_questions(candidates):
 
 
 def select_products(candidates, scores):
+    &quot;&quot;&quot;根据匹配分与置信度筛选商品，最多推荐一款，并保留全部评估结果。&quot;&quot;&quot;
     evaluated = []
     for item in candidates:
         answer = scores.get(item[&quot;id&quot;])
+        # 缺失或无效的评分不能当作低分处理，应由上层返回评估失败。
         if answer is None or not 0 &lt;= answer.score &lt;= 2 or not 0 &lt;= answer.confidence &lt;= 1:
             raise ValueError(&quot;评分缺失或超出有效范围&quot;)
+        # 先看判断是否足够确定，再看是否匹配；低置信度不等于商品不合适。
+        # 两项判断都使用 &lt;，所以恰好等于门槛时允许通过。
         if answer.confidence &lt; MIN_CONFIDENCE:
             decision = &quot;needs_review&quot;
         elif answer.score &lt; MIN_SCORE:
             decision = &quot;low_match&quot;
         else:
             decision = &quot;eligible&quot;
+        # 保留原始商品资料、评分与处理状态，便于查看未被推荐的原因。
         evaluated.append({**item, &quot;match_score&quot;: answer.score,
                           &quot;confidence&quot;: answer.confidence, &quot;decision&quot;: decision})
     # 同分时优先较低价格，再按 ID，保证固定输入的输出顺序稳定。
     evaluated.sort(key=lambda item: (-item[&quot;match_score&quot;], item[&quot;price&quot;], item[&quot;id&quot;]))
+    # 只从达标商品中取第一款，避免“所有候选都差，但仍推荐第一名”。
     recommendations = [item for item in evaluated if item[&quot;decision&quot;] == &quot;eligible&quot;][:1]
     if recommendations:
         status, note = &quot;recommended&quot;, &quot;从同时达到匹配与置信度门槛的商品中推荐一款。&quot;
     elif any(item[&quot;decision&quot;] == &quot;needs_review&quot; for item in evaluated):
+        # 没有达标商品，但仍有不确定的判断，不能直接下结论说全部不合适。
         status, note = &quot;needs_review&quot;, &quot;部分判断不确定，暂不推荐；请补充需求或核实商品资料。&quot;
     else:
+        # 此时所有候选均通过置信度门槛，只是匹配分不足。
         status, note = &quot;no_match&quot;, &quot;预算内商品均未达到匹配门槛，请调整偏好或扩充候选。&quot;
     return {&quot;status&quot;: status, &quot;note&quot;: note, &quot;recommendations&quot;: recommendations,
             &quot;evaluated&quot;: evaluated}
 
 
 def recommend(requirements, max_price):
+    &quot;&quot;&quot;完成输入校验、预算过滤、远程评分和推荐决策，返回结构化结果。&quot;&quot;&quot;
+    # 1. 缺少用途或预算时先补信息，不猜测用户预算，也不请求模型。
     missing = []
     if not requirements.strip():
         missing.append(&quot;requirements&quot;)
@@ -737,34 +770,43 @@ def recommend(requirements, max_price):
     if missing:
         return {&quot;status&quot;: &quot;needs_input&quot;, &quot;missing_fields&quot;: missing,
                 &quot;note&quot;: &quot;请补充用途偏好和最高预算。&quot;, &quot;recommendations&quot;: []}
+    # 排除零、负数、NaN 和无穷大，确保预算能用于正常的价格比较。
     if not math.isfinite(max_price) or max_price &lt;= 0:
         return {&quot;status&quot;: &quot;invalid_input&quot;, &quot;note&quot;: &quot;预算必须是大于零的有限数值。&quot;,
                 &quot;recommendations&quot;: []}
+    # 2. 预算是硬约束，由 Python 精确比较；价格等于预算时也保留。
     candidates = [item for item in PRODUCTS if item[&quot;price&quot;] &lt;= max_price]
     if not candidates:
+        # 没有候选是正常业务结果，直接返回，省去无意义的远程调用。
         return {&quot;status&quot;: &quot;no_candidates&quot;, &quot;note&quot;: &quot;演示商品库中没有预算内商品。&quot;,
                 &quot;recommendations&quot;: []}
     try:
+        # 3. 复用客户端配置读取 API Key；一次请求评估全部预算内候选。
         with create_client() as client:
             result = client.system_one(
                 state={&quot;requirements&quot;: requirements},
                 questions=build_questions(candidates),
             )
+        # 4. Jev 只提供评分，由代码决定哪些商品达标以及最终推荐谁。
         return select_products(candidates, result.scores)
     except (TypeSafeError, ValueError) as error:
+        # 请求、配置或评分校验失败，与“没有合适商品”分开返回。
         return {&quot;status&quot;: &quot;evaluation_failed&quot;, &quot;error_type&quot;: type(error).__name__,
                 &quot;note&quot;: &quot;未获得有效评分，请检查配置或稍后重试。&quot;, &quot;recommendations&quot;: []}
 
 
 def main():
+    &quot;&quot;&quot;读取命令行需求与预算，输出便于查看或被其他程序读取的 JSON。&quot;&quot;&quot;
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(&quot;requirements&quot;, nargs=&quot;?&quot;, default=&quot;&quot;)
     parser.add_argument(&quot;--budget&quot;, type=float, default=None, help=&quot;最高预算，单位为元&quot;)
     args = parser.parse_args()
     output = recommend(args.requirements, args.budget)
+    # 附上数据来源、评分范围和本次门槛，方便理解与复核推荐结果。
     output.update({&quot;source&quot;: &quot;虚构教学商品库&quot;, &quot;score_range&quot;: [0, 2],
                    &quot;min_score&quot;: MIN_SCORE, &quot;min_confidence&quot;: MIN_CONFIDENCE})
     print(json.dumps(output, ensure_ascii=False, indent=2))
+    # 非法输入或评估失败返回非零退出码；缺信息、无候选等正常分支返回 0。
     return 1 if output[&quot;status&quot;] in {&quot;invalid_input&quot;, &quot;evaluation_failed&quot;} else 0
 
 
@@ -833,6 +875,7 @@ python case_product_recommendation.py "推荐办公笔记本。" --budget 0</cod
 import argparse
 import json
 import sys
+from time import perf_counter
 
 from langchain.agents import create_agent
 from typesafe_sdk import Noul
@@ -841,7 +884,9 @@ from agent_config import create_agent_model
 from runtime import create_client
 
 
+# 字段顺序也是追问顺序：先确认商品，再确认具体问题。
 FIELDS = {&quot;product&quot;: &quot;商品名称或类型&quot;, &quot;problem&quot;: &quot;具体问题或异常表现&quot;}
+# 默认按三轮演示；交互模式下改为读取用户的键盘输入。
 DEMO_TURNS = [
     &quot;我想咨询一下售后。&quot;,
     &quot;买的是一副蓝牙耳机。&quot;,
@@ -849,7 +894,16 @@ DEMO_TURNS = [
 ]
 
 
+def log(stage, message, *, core=False, error=False):
+    &quot;&quot;&quot;核心日志展示对话与结果，过程日志展示内部步骤；每行保留来源标记。&quot;&quot;&quot;
+    # 默认是过程日志；用户需要看到的回复和提示显式标为核心，错误始终为核心。
+    category = &quot;核心&quot; if core or error else &quot;过程&quot;
+    for line in str(message).splitlines() or [&quot;&quot;]:
+        print(f&quot;[{category}][{stage}] {line}&quot;, file=sys.stderr if error else sys.stdout, flush=True)
+
+
 def build_questions():
+    &quot;&quot;&quot;构建两个独立的 Noul 问题，一次请求检查两项信息。&quot;&quot;&quot;
     # 每个条件独立检查；只依据用户陈述，不把助手的举例当作事实。
     common = &quot;只依据用户陈述；明确更正以最新说法为准，矛盾未解决时视为未说明。&quot;
     return {
@@ -863,6 +917,7 @@ def build_questions():
 
 
 def missing_information(result, threshold=0.8):
+    &quot;&quot;&quot;将概率转成待确认字段；等于门槛时通过，缺失或无效时继续追问。&quot;&quot;&quot;
     if not 0 &lt;= threshold &lt;= 1:
         raise ValueError(&quot;阈值必须在 0～1 之间&quot;)
     missing = []
@@ -874,21 +929,42 @@ def missing_information(result, threshold=0.8):
 
 
 def run_turn(client, model, user_statements, messages, threshold=0.8):
-    result = client.system_one(
-        state={&quot;user_statements&quot;: list(user_statements)},
-        questions=build_questions(),
-    )
+    &quot;&quot;&quot;完成一轮检查与回复，返回是否已进入摘要阶段。&quot;&quot;&quot;
+    # 1. Jev 只接收用户陈述，避免助手提问中的示例被当作真实信息。
+    log(&quot;Jev&quot;, f&quot;开始检查，累计用户陈述 {len(user_statements)} 条，判断门槛 {threshold:.2f}&quot;)
+    state = {&quot;user_statements&quot;: list(user_statements)}
+    questions = build_questions()
+    # 打印本次实际传入的参数；问题对象转成 JSON 展示，调用仍使用原对象。
+    log(&quot;Jev&quot;, &quot;提交 state：\n&quot; + json.dumps(state, ensure_ascii=False, indent=2))
+    log(&quot;Jev&quot;, &quot;提交 questions：\n&quot; + json.dumps(
+        {key: question.model_dump(mode=&quot;json&quot;, exclude_none=True)
+         for key, question in questions.items()}, ensure_ascii=False, indent=2))
+    started = perf_counter()
+    try:
+        result = client.system_one(
+            state=state,
+            questions=questions,
+        )
+    finally:
+        # 即使请求失败，也记录此次调用耗时；耗时日志不表示请求成功。
+        log(&quot;Jev&quot;, f&quot;本次调用耗时：{perf_counter() - started:.2f} 秒&quot;)
     missing = missing_information(result, threshold)
-    print(&quot;信息存在概率：&quot;, json.dumps(
+    log(&quot;Jev&quot;, &quot;信息存在概率：&quot; + json.dumps(
         {key: answer.noul for key, answer in result.nouls.items()}, ensure_ascii=False))
-    print(&quot;仍需确认：&quot;, &quot;、&quot;.join(FIELDS[key] for key in missing) or &quot;无&quot;)
+    log(&quot;流程&quot;, &quot;仍需确认：&quot; + (&quot;、&quot;.join(FIELDS[key] for key in missing) or &quot;无&quot;))
+    # 2. 业务代码决定本轮任务，Agent 负责将任务表达成自然语言。
     if missing:
+        log(&quot;流程&quot;, &quot;进入追问阶段，本轮只问：&quot; + FIELDS[missing[0]])
         instruction = &quot;本轮只追问这一项：&quot; + FIELDS[missing[0]] + &quot;。用一句自然的问题，不要输出摘要。&quot;
     else:
+        log(&quot;流程&quot;, &quot;两项信息均已满足，进入摘要阶段&quot;)
         instruction = (
             &quot;信息收集完成。输出简短的售后咨询摘要，包含商品和具体问题，&quot;
             &quot;并说明摘要仅供后续咨询使用，尚未提交售后申请。不要再追问。&quot;
         )
+    # 3. 每轮使用当前任务创建 Agent；完整对话历史会在调用时传入。
+    # 不开放业务工具，因此本例只能追问和整理摘要，不能办理售后。
+    log(&quot;Agent&quot;, f&quot;创建对话助手，传入历史消息 {len(messages)} 条，无业务工具&quot;)
     agent = create_agent(
         model=model,
         tools=[],
@@ -899,38 +975,55 @@ def run_turn(client, model, user_statements, messages, threshold=0.8):
             &quot;不诊断原因，不承诺退款或换货，不声称已创建工单。&quot;
         ),
     )
-    response = agent.invoke({&quot;messages&quot;: messages}, config={&quot;recursion_limit&quot;: 6})
+    log(&quot;Agent&quot;, &quot;开始生成回复&quot;)
+    started = perf_counter()
+    try:
+        response = agent.invoke({&quot;messages&quot;: messages}, config={&quot;recursion_limit&quot;: 6})
+    finally:
+        log(&quot;Agent&quot;, f&quot;本次调用耗时：{perf_counter() - started:.2f} 秒&quot;)
     reply = response[&quot;messages&quot;][-1].content
-    print(&quot;Agent：&quot;, reply)
+    log(&quot;Agent回复&quot;, reply, core=True)
+    # 4. 助手回复仅加入对话历史，不加入供 Jev 检查的用户陈述。
     messages.append({&quot;role&quot;: &quot;assistant&quot;, &quot;content&quot;: reply})
+    log(&quot;流程&quot;, &quot;本轮结束：摘要已输出&quot; if not missing else &quot;本轮结束：等待用户补充&quot;)
     return not missing
 
 
 def main():
+    &quot;&quot;&quot;初始化客户端，并运行预设演示或键盘交互会话。&quot;&quot;&quot;
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(&quot;--interactive&quot;, action=&quot;store_true&quot;, help=&quot;改为键盘输入，输入 exit 退出&quot;)
     parser.add_argument(&quot;--threshold&quot;, type=float, default=0.8)
     args = parser.parse_args()
     if not 0 &lt;= args.threshold &lt;= 1:
         parser.error(&quot;阈值必须在 0～1 之间&quot;)
+    log(&quot;系统&quot;, f&quot;启动售后咨询，模式：{&#x27;键盘交互&#x27; if args.interactive else &#x27;预设演示&#x27;}，门槛：{args.threshold:.2f}&quot;)
+    # 两份历史均只保存在内存中，重新运行脚本会开始新会话。
     messages, user_statements = [], []
+    log(&quot;系统&quot;, &quot;正在初始化 Agent 模型和 Jev 客户端&quot;)
     model = create_agent_model()
     with create_client() as client:
+        log(&quot;系统&quot;, &quot;客户端初始化完成；尚未发送模型请求&quot;)
         turns = iter(DEMO_TURNS)
         while True:
-            text = input(&quot;你：&quot;).strip() if args.interactive else next(turns, None)
+            text = input(&quot;[核心][用户输入] 你：&quot;).strip() if args.interactive else next(turns, None)
             if text is None:
-                print(&quot;预设消息已结束；若仍有缺项，可用 --interactive 继续体验新会话。&quot;)
+                log(&quot;系统&quot;, &quot;预设消息已结束；若仍有缺项，可用 --interactive 继续体验新会话。&quot;, core=True)
                 break
             if text.lower() == &quot;exit&quot;:
+                log(&quot;系统&quot;, &quot;用户主动退出咨询&quot;, core=True)
                 break
             if not text.strip():
+                log(&quot;流程&quot;, &quot;输入为空，请重新输入；本次不调用模型&quot;, core=True)
                 continue
+            log(&quot;流程&quot;, f&quot;第 {len(user_statements) + 1} 轮开始&quot;)
             if not args.interactive:
-                print(&quot;\n预设用户：&quot;, text)
+                log(&quot;用户输入&quot;, &quot;预设消息：&quot; + text, core=True)
+            # 先保存本轮原话，再检查累计信息，支持跨轮补充。
             user_statements.append(text)
             messages.append({&quot;role&quot;: &quot;user&quot;, &quot;content&quot;: text})
             if run_turn(client, model, user_statements, messages, args.threshold):
+                log(&quot;系统&quot;, &quot;咨询信息收集完成，会话结束；未提交售后申请&quot;, core=True)
                 break
     return 0
 
@@ -939,12 +1032,13 @@ if __name__ == &quot;__main__&quot;:
     try:
         raise SystemExit(main())
     except (EOFError, KeyboardInterrupt):
-        print(&quot;\n已结束咨询。&quot;)
+        log(&quot;系统&quot;, &quot;已结束咨询。&quot;, core=True)
     except Exception as error:
-        print(f&quot;本轮未完成：{type(error).__name__}，请检查配置或网络后重试。&quot;, file=sys.stderr)
+        log(&quot;错误&quot;, f&quot;本轮未完成：{type(error).__name__}，请检查配置或网络后重试。&quot;, error=True)
         raise SystemExit(1)</code></pre></div>
 <p>这里的 <code>tools=[]</code> 是有意保持案例简单：Agent 只负责对话与摘要。每轮重新创建 Agent 时都会传入完整 <code>messages</code>，所以对话上下文仍然保留；历史只存于当前进程，退出或重新运行就会重置。</p>
 <h3>6.5 运行与核对：从三轮演示到自由输入</h3>
+<p>日志分为两类：<code>[核心]</code> 标记用户输入、Agent 追问与摘要、需要用户处理的提示，以及结束或错误信息；<code>[过程]</code> 标记初始化、轮次、检查概率、分支判断和调用耗时。第二层前缀保留来源，例如 <code>[核心][Agent回复]</code>、<code>[过程][Jev]</code>、<code>[过程][流程]</code>。两类日志都会显示，多行回复的每一行也都有前缀，方便只关注核心对话或查看完整过程。</p>
 <div class="codebox"><div class="codehead"><span>Shell · 每轮先请求 Jev，再调用对话模型</span><button class="copy" type="button">复制代码</button></div><pre><code># 演示：依次输入预设的三条用户消息，无需键盘输入
 python agent_case_return_intake.py
 
