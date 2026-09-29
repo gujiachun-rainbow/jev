@@ -2,6 +2,35 @@
 
 一个客服工单分析命令行程序，使用官方 Python SDK 调用 `jev-latest`。
 
+## Jev 判断实验室
+
+前端位于 `docs/playground.html`，FastAPI 后端位于 `playground/server.py`，支持 Noul 判断、Choice 选择、Score 评分。示例只填充输入；点击“运行判断”后，由后端使用官方 SDK 调用 `jev-latest`，展示真实答案、概率、耗时及 JSON 结果。
+
+在项目根目录执行（Python 3.10+）：
+
+```bash
+python -m pip install -r playground/requirements.txt
+python -m playground.server
+```
+
+启动后直接打开 `docs/playground.html`（`file://`），前端自动请求 `http://127.0.0.1:8765/api/...`。后端仅提供接口，不托管前端页面。
+
+使用 `--port 8766` 可更换端口；此时直接打开文件需加上 `?api=http://127.0.0.1:8766`。独立静态服务器也可使用这个参数指定后端。跨域使用 `allow_origins=["*"]` 允许所有来源（包括本地文件），用于测试演示。
+
+也可以直接使用 Uvicorn 启动（开发时自动重载）：
+
+```powershell
+.\.venv\Scripts\python.exe -m uvicorn playground.server:app --host 127.0.0.1 --port 8765 --reload
+```
+
+接口调试文档：http://127.0.0.1:8765/docs。
+
+在项目根目录 `.env` 中配置 `TYPESAFE_API_KEY`，或设置同名环境变量；环境变量优先。Key 仅由服务端读取。每次点击运行会发送当前文本、问题和标准到 TypeSafe，可能消耗账户额度；请求超时为 60 秒，不自动重试。修改输入会清空结果并取消浏览器等待，但已发出的上游请求可能仍会完成。
+
+后端默认仅监听本机。`GET /api/health` 返回配置状态；`POST /api/evaluate` 接收 `mode`、`state`、`instructions` 和 `criteria`（Score 为有序数组，其他模式为对象），返回 `answer`、输入快照和 `elapsed_ms`。服务适用于本地实验。
+
+离线接口验证：`python -m unittest discover -s playground -p "test_*.py" -v`。
+
 ## Jev 开发者课程
 
 面向已经会使用 LangChain Agent 的开发者，按“结构化判断 → 问题设计 → 三种 Agent 接入模式 → 验证与综合练习”学习。

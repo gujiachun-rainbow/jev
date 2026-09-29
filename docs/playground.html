@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Jev 三种结构化判断模式的在线判断实验室：Noul、Choice 与 Score。">
+  <title>Jev · 判断实验室</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' rx='12' fill='%231e5749'/%3E%3Ctext x='13' y='29' fill='%23fffdf8' font-size='30' font-family='Georgia'%3Ej%3C/text%3E%3C/svg%3E">
+  <link rel="stylesheet" href="playground.css">
+  <script src="playground.js" defer></script>
+</head>
+<body>
+  <a class="skip" href="#workspace">跳到实验区</a>
+  <div class="shell">
+    <section class="intro"><div><div class="eyebrow">LESS GUESSWORK. MORE SIGNAL.</div><h1>把语言，变成明确的判断<span>。</span></h1><p>一个问题，一组标准。探索 Jev 的三种结构化输出。</p></div><div class="intro-note"><span>01 — 03</span><p>判断 · 选择 · 评分</p></div></section>
+    <section class="connection panel" aria-label="运行环境"><div class="connection-title"><span class="step">01</span><div><span class="eyebrow">运行环境</span><h2>从一个示例开始</h2></div></div><div class="key-field"><label for="api-key">TYPESAFE API KEY <span>服务端配置</span></label><input id="api-key" type="text" value="正在连接后端…" readonly><small id="connection-note">API Key 由后端读取，不会发送到浏览器。</small></div><div class="model-field"><label for="model">模型</label><input id="model" value="jev-latest" readonly><small>通过后端调用</small></div></section>
+    <main class="workspace" id="workspace">
+      <section class="panel builder" aria-labelledby="builder-title"><div class="panel-heading"><div><span class="eyebrow">输入配置</span><h2 id="builder-title">定义判断任务</h2></div><span class="mono quiet">1 question / evaluation</span></div>
+        <div class="builder-body">
+          <div class="mode-tabs" role="tablist" aria-label="判断模式"><button id="tab-noul" role="tab" aria-selected="true" aria-controls="editor" data-mode="noul"><span class="mode-icon">?</span><span><strong>判断</strong><small>NOUL</small></span><i></i></button><button id="tab-choice" role="tab" aria-selected="false" aria-controls="editor" tabindex="-1" data-mode="choice"><span class="mode-icon">↗</span><span><strong>选择</strong><small>CHOICE</small></span><i></i></button><button id="tab-score" role="tab" aria-selected="false" aria-controls="editor" tabindex="-1" data-mode="score"><span class="mode-icon">#</span><span><strong>评分</strong><small>SCORE</small></span><i></i></button></div>
+          <div id="editor" role="tabpanel" aria-labelledby="tab-noul"><p class="mode-description" id="mode-description"></p>
+            <div class="example-row"><label for="example">试试一个场景</label><select id="example"></select></div>
+            <div class="field context-field"><div class="field-heading"><label for="context"><span class="coral-dot"></span>State / context <span>待分析内容</span></label><span class="badge">TEXT</span></div><textarea id="context" rows="4" spellcheck="false"></textarea><div class="context-meta"><span id="context-status">✓ 已填写文本</span><span id="char-count" class="mono"></span></div></div>
+            <div class="field"><div class="field-heading"><label for="instructions">Instructions <span>问题</span></label><small>你希望 Jev 判断什么？</small></div><textarea id="instructions" rows="2" spellcheck="false"></textarea></div>
+            <section class="criteria-box"><div class="field-heading"><h3><span class="coral-dot"></span>Criteria <span>判定标准</span></h3><small id="criteria-hint"></small></div><div id="criteria"></div></section>
+            <p class="edit-note" id="edit-note" role="alert" hidden></p>
+            <div class="submit-row"><button class="text-button" id="reset" type="button">↺ 恢复示例</button><button class="primary-button" id="run" type="button">运行判断 <span>↗</span></button></div>
+          </div>
+        </div>
+      </section>
+      <aside class="result-column"><section class="panel results" aria-labelledby="result-title"><div class="panel-heading"><div><span class="eyebrow">观察结构化输出</span><h2 id="result-title">结果</h2></div><span id="result-status" class="result-status" role="status">等待运行</span></div><div class="result-body"><div class="output-tabs" role="tablist" aria-label="结果展示"><button id="view-visual" role="tab" aria-selected="true" aria-controls="visual-panel" data-view="visual">可视化</button><button id="view-json" role="tab" aria-selected="false" aria-controls="json-panel" tabindex="-1" data-view="json">JSON 结果</button></div>
+            <div id="visual-panel" role="tabpanel" aria-labelledby="view-visual"><section class="question-preview"><div class="card-label"><span>本次问题</span><span class="badge" id="result-mode"></span></div><h3 id="result-question"></h3><details><summary>查看 context / criteria</summary><div id="result-details"></div></details></section><section class="evaluation" id="evaluation"></section><div class="reading-note"><span>↳</span><p id="reading-note"></p></div></div>
+            <div id="json-panel" role="tabpanel" aria-labelledby="view-json" hidden><div class="json-heading"><span>后端返回结果 · 含输入与耗时</span><button id="copy-json" class="text-button">复制 JSON</button></div><pre id="json-output" tabindex="0"></pre><p id="copy-status" role="status"></p></div>
+          </div></section></aside>
+    </main>
+  </div>
+</body>
+</html>
